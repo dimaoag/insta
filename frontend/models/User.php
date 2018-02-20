@@ -19,6 +19,10 @@ use yii\web\IdentityInterface;
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
+ * @property string $about
+ * @property integer $type
+ * @property string $nickname
+ * @property string $picture
  * @property string $password write-only password
  */
 class User extends ActiveRecord implements IdentityInterface
@@ -82,6 +86,18 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return static::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);
     }
+
+
+    /**
+     * @return int|mixed|string
+     */
+    public function getNickname(){
+        if ($this->nickname){
+            return $this->nickname;
+        }
+        return $this->getId();
+    }
+
 
     /**
      * Finds user by password reset token

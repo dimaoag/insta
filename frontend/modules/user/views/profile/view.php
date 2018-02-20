@@ -1,5 +1,10 @@
 <?php
 /** @var $user frontend\models\User */
+
+use yii\helpers\Html;
+use yii\helpers\HtmlPurifier;
 ?>
-<h1>Hello</h1>
-<p>It's  <?php echo $user->username; ?> page!</p>
+
+<h3><?php echo Html::encode($user->username); ?></h3>
+<p><?php echo HtmlPurifier::process($user->about); ?></p>
+<hr>
