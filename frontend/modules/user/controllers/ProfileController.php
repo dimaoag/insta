@@ -137,6 +137,28 @@ class ProfileController extends Controller
     }
 
 
+    public function actionDeletePicture(){
+
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['/user/default/login']);
+        }
+
+        /* @var $currentUser User */
+        $currentUser = Yii::$app->user->identity;
+
+        if ($currentUser->deletePicture()) {
+                Yii::$app->session->setFlash('success', 'Picture deleted');
+            } else {
+                Yii::$app->session->setFlash('danger', 'Error');
+            }
+
+        return $this->redirect(['/user/profile/view', 'nickname' => $currentUser->getNickname()]);
+    }
+
+
+
+
+
 //    public function actionGenerate(){
 //
 //        $faker = \Faker\Factory::create();

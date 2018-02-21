@@ -21,7 +21,7 @@ class PictureForm extends Model
         ];
     }
 
-    
+
 
     public function __construct()
     {

@@ -57,5 +57,19 @@ class Storage extends Component implements StorageInterface
     }
 
 
+    public function deleteFile($filename){
+
+        $file = $this->getStoragePath().$filename;
+
+        if (file_exists($file)) {
+            // Если файл существует, удаляем
+            return unlink($file);
+        }
+
+        // Файла нет - хорошо. И удалять не нужно
+        return true;
+    }
+
+
 
 }

@@ -17,14 +17,15 @@ use dosamigos\fileupload\FileUpload;
 
 <img src="<?php echo $user->getPicture(); ?>" id="profile-picture">
 
-<div class="alert alert-success display-none" id="profile-image-success">Profile image updated</div>
-<div class="alert alert-danger display-none" id="profile-image-fail"></div>
 
-<br><br>
 
 <?php if ($currentUser): ?>
 
     <?php if ($currentUser->equals($user)): ?>
+        <hr>
+        <div class="alert alert-success display-none" id="profile-image-success">Profile image updated</div>
+        <div class="alert alert-danger display-none" id="profile-image-fail"></div>
+
 
         <?= FileUpload::widget([
             'model' => $modelPicture,
@@ -45,6 +46,8 @@ use dosamigos\fileupload\FileUpload;
                 }',
             ],
         ]); ?>
+
+        <a href="<?php echo Url::to(['/user/profile/delete-picture']); ?>" class="btn btn-danger">Delete picture</a>
 
     <?php endif; ?>
 <?php endif; ?>
