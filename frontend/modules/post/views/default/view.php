@@ -28,15 +28,13 @@ use yii\web\YiiAsset;
             <?php echo Html::encode($post->description)?>
         </div>
 
-        <div class="col-md-12">
-            Likes: <span class="likes-count"><?php echo $post->countLikes(); ?></span>
-        </div>
 
     </div>
 
     <hr>
 
     <div class="col-md-12">
+        Likes: <span class="likes-count"><?php echo $post->countLikes(); ?></span>
         <a href="" class="btn btn-primary button-unlike <?php echo ($carrentUser && $post->isLikeBy($carrentUser)) ? "" : "display-none"; ?>" data-id="<?php echo $post->id; ?>">
             Unlike&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-down"></span>
         </a>
