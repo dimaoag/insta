@@ -16,16 +16,12 @@ class PictureForm extends Model
             [['picture'], 'file',
                 'extensions' => ['jpg'],
                 'checkExtensionByMimeType' => true,
+                'maxSize' => $this->getMaxFileSize(),
             ],
         ];
     }
 
-
-
-    public function save(){
-
-        return 1;
-    }
+    
 
     public function __construct()
     {
@@ -37,6 +33,14 @@ class PictureForm extends Model
      */
     public function resizePicture()
     {
+
+        if ($this->picture->error) {
+            /* В объекте UploadedFile есть свойство error. Если в нем "1", значит
+            * произошла ошибка и работать с изображением не нужно, прерываем
+            * выполнение метода */
+            return;
+        }
+
         $width = Yii::$app->params['profilePicture']['maxWidth'];
         $height = Yii::$app->params['profilePicture']['maxHeight'];
 
@@ -56,5 +60,9 @@ class PictureForm extends Model
         })->save();
     }
 
+    public function getMaxFileSize(){
+
+        return Yii::$app->params['maxFileSize'];
+    }
 
 }
