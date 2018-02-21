@@ -51,7 +51,7 @@ use dosamigos\fileupload\FileUpload;
 
     <?php endif; ?>
 <?php endif; ?>
-
+<hr>
 
 <?php if ($currentUser && !$user->equals($currentUser)): ?>
 

@@ -3,6 +3,7 @@
 namespace frontend\models;
 
 use Yii;
+use yii\redis\Connection;
 
 /**
  * This is the model class for table "post".
@@ -47,4 +48,43 @@ class Post extends \yii\db\ActiveRecord
 
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
+
+    public function getId(){
+        return $this->id;
+    }
+
+    public function like(User $user){
+
+        /** @var $redis Connection */
+        $redis = Yii::$app->redis;
+
+        $redis->sadd("post:{$this->getId()}:likes", $user->getId());
+        $redis->sadd("user:{$user->getId()}:likes", $this->getId());
+    }
+
+    public function unlike(User $user){
+
+        /** @var $redis Connection */
+        $redis = Yii::$app->redis;
+
+        $redis->srem("post:{$this->getId()}:likes", $user->getId());
+        $redis->srem("user:{$user->getId()}:likes", $this->getId());
+    }
+
+
+    public function countLikes(){
+        /** @var $redis Connection */
+        $redis = Yii::$app->redis;
+
+        return $redis->scard("post:{$this->getId()}:likes");
+    }
+
+    public function isLikeBy(User $user){
+        /** @var $redis Connection */
+        $redis = Yii::$app->redis;
+
+        return $redis->sismember("post:{$this->getId()}:likes", $user->getId());
+    }
+
+
 }
