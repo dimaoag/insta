@@ -7,6 +7,9 @@ return [
     'storagePath' => '@frontend/web/uploads/',
     'storageUri' => '/uploads/',
 
-
+    'profilePicture' => [
+        'maxWidth' => 1280,
+        'maxHeight' => 1024,
+    ],
 
 ];

@@ -22,28 +22,31 @@ use dosamigos\fileupload\FileUpload;
 
 <br><br>
 
-<?php if ($currentUser->equals($user)): ?>
+<?php if ($currentUser): ?>
 
-    <?= FileUpload::widget([
-        'model' => $modelPicture,
-        'attribute' => 'picture',
-        'url' => ['/user/profile/upload-picture'], // your url, this is just for demo purposes,
-        'options' => ['accept' => 'image/*'],
-        'clientEvents' => [
-            'fileuploaddone' => 'function(e, data) {
-                if(data.result.success){
-                    $("#profile-image-success").show();
-                    $("#profile-image-fail").hide();
-                    $("#profile-picture").attr("src", data.result.pictureUri);
-                } else {
-                    $("#profile-image-fail").html(data.result.errors.picture).show();
-                    $("#profile-image-success").hide();
-                }
-                                    
-            }',
-        ],
-    ]); ?>
+    <?php if ($currentUser->equals($user)): ?>
 
+        <?= FileUpload::widget([
+            'model' => $modelPicture,
+            'attribute' => 'picture',
+            'url' => ['/user/profile/upload-picture'], // your url, this is just for demo purposes,
+            'options' => ['accept' => 'image/*'],
+            'clientEvents' => [
+                'fileuploaddone' => 'function(e, data) {
+                    if(data.result.success){
+                        $("#profile-image-success").show();
+                        $("#profile-image-fail").hide();
+                        $("#profile-picture").attr("src", data.result.pictureUri);
+                    } else {
+                        $("#profile-image-fail").html(data.result.errors.picture).show();
+                        $("#profile-image-success").hide();
+                    }
+                                        
+                }',
+            ],
+        ]); ?>
+
+    <?php endif; ?>
 <?php endif; ?>
 
 
