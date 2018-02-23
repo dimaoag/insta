@@ -2,8 +2,10 @@
 namespace frontend\modules\post\models;
 
 
+use frontend\models\User;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use Yii;
 
 
 /**
@@ -57,6 +59,18 @@ class Comment extends ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+
+    public static function getUserNameByUserId($id){
+
+        $user = User::find()->select('username')->where(['id' => $id])->asArray()->one();
+
+        return $user['username'];
+    }
+
+    public static function getDate($date){
+        return Yii::$app->formatter->asDatetime($date, "php:Y-d-m  H:i");
     }
 
 

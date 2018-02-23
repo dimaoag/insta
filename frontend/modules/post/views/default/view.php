@@ -11,6 +11,7 @@
 use yii\helpers\Html;
 use yii\web\YiiAsset;
 use yii\widgets\ActiveForm;
+use frontend\modules\post\models\Comment;
 
 ?>
 
@@ -48,34 +49,34 @@ use yii\widgets\ActiveForm;
     </div>
     <br><br>
 
-    <?php if ($carrentUser): ?>
-        <div class="row">
-            <div class="col-lg-5">
-                <?php if(!empty($comments)): ?>
+        <div class="container">
+                    <?php if(!empty($comments)): ?>
+                        <?php foreach ($comments as $comment): ?>
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <h5><?= Comment::getUserNameByUserId($comment['user_id']); ?></h5>
+                                    <small><?= Comment::getDate($comment['updated_at']); ?></small>
+                                    <br>
+                                    <p><?php echo Html::encode($comment['text']); ?></p>
+                                    <hr>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+            <div class="row">
+                <div class="col-lg-5">
+                    <?php $form = ActiveForm::begin(['action' => ['/post/default/create-comment', 'id' => $post->id],
+                        'options' => ['class' => 'form-horizontal contact-form', 'role' => 'form']]); ?>
 
-                    <?php foreach ($comments as $comment): ?>
+                    <?php echo $form->field($commentForm, 'text')->textarea(['class' => 'form-control'])->label(false); ?>
 
-                        <div><?= $comment['text']; ?></div
-                        <hr>
+                    <button type="submit" class="btn btn-success btn-block">Add</button>
 
-                    <?php endforeach; ?>
-
-                <?php endif; ?>
+                    <?php ActiveForm::end(); ?>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-5">
-                <?php $form = ActiveForm::begin(['action' => ['/post/default/create-comment', 'id' => $post->id],
-                    'options' => ['class' => 'form-horizontal contact-form', 'role' => 'form']]); ?>
 
-                <?php echo $form->field($commentForm, 'text')->textarea(['class' => 'form-control'])->label(false); ?>
-
-                <button type="submit" class="btn btn-success btn-block">Add</button>
-
-                <?php ActiveForm::end(); ?>
-            </div>
-        </div>
-    <?php endif; ?>
 
 
 

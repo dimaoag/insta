@@ -13,6 +13,7 @@ use Yii;
 use frontend\models\Post;
 use frontend\models\User;
 use frontend\modules\post\models\Comment;
+use yii\filters\AccessControl;
 
 /**
  * Default controller for the `post` module
@@ -20,11 +21,27 @@ use frontend\modules\post\models\Comment;
 class DefaultController extends Controller
 {
 
-    public function actionCreate(){
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['create', 'create-comment', 'like', 'unlike'],
+                'rules' => [
+                    // allow authenticated users
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    // everything else is denied
+                ],
+            ],
+        ];
+    }
 
-        if (Yii::$app->user->isGuest){
-            return $this->redirect(['/user/default/login']);
-        }
+
+
+    public function actionCreate(){
 
         /**@var $model PostForm */
         $model = new PostForm(Yii::$app->user->identity->getId());
@@ -95,9 +112,9 @@ class DefaultController extends Controller
 
     public function actionLike(){
 
-        if (Yii::$app->user->isGuest){
-            return $this->redirect(['/user/default/login']);
-        }
+//        if (Yii::$app->user->isGuest){
+//            return $this->redirect(['/user/default/login']);
+//        }
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 
@@ -120,9 +137,9 @@ class DefaultController extends Controller
 
     public function actionUnlike(){
 
-        if (Yii::$app->user->isGuest){
-            return $this->redirect(['/user/default/login']);
-        }
+//        if (Yii::$app->user->isGuest){
+//            return $this->redirect(['/user/default/login']);
+//        }
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 

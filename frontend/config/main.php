@@ -27,6 +27,7 @@ return [
             'identityClass' => 'frontend\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
+            'loginUrl'=> ['user/default/login'],
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
@@ -55,6 +56,10 @@ return [
         ],
         'storage' => [
             'class' => 'frontend\components\Storage',
+        ],
+        'formatter' => [
+            'dateFormat' => 'Y-m-d H:i:s',
+            'datetimeFormat' => 'Y-m-d H:i:s',
         ],
 
 
