@@ -4,10 +4,14 @@
  * @var $this yii\web\View;
  * @var $post frontend\models\Post;
  * @var $carrentUser frontend\models\User;
+ * @var $commentForm frontend\modules\post\models\forms\CommentForm;
+ * @var $comments  array frontend\modules\post\models\Comment;
  */
 
 use yii\helpers\Html;
 use yii\web\YiiAsset;
+use yii\widgets\ActiveForm;
+
 ?>
 
 <div class="post-default-index">
@@ -42,6 +46,41 @@ use yii\web\YiiAsset;
             Like&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-up"></span>
         </a>
     </div>
+    <br><br>
+
+    <?php if ($carrentUser): ?>
+        <div class="row">
+            <div class="col-lg-5">
+                <?php if(!empty($comments)): ?>
+
+                    <?php foreach ($comments as $comment): ?>
+
+                        <div><?= $comment['text']; ?></div
+                        <hr>
+
+                    <?php endforeach; ?>
+
+                <?php endif; ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-5">
+                <?php $form = ActiveForm::begin(['action' => ['/post/default/create-comment', 'id' => $post->id],
+                    'options' => ['class' => 'form-horizontal contact-form', 'role' => 'form']]); ?>
+
+                <?php echo $form->field($commentForm, 'text')->textarea(['class' => 'form-control'])->label(false); ?>
+
+                <button type="submit" class="btn btn-success btn-block">Add</button>
+
+                <?php ActiveForm::end(); ?>
+            </div>
+        </div>
+    <?php endif; ?>
+
+
+
+
+
 
 
 </div>
@@ -51,6 +90,7 @@ use yii\web\YiiAsset;
 $this->registerJsFile('@web/js/like4.js', [
    'depends' => YiiAsset::className(),
 ]);
+
 
 ?>
 

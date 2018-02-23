@@ -4,6 +4,7 @@ namespace frontend\models;
 
 use Yii;
 use yii\redis\Connection;
+use frontend\modules\post\models\Comment;
 
 /**
  * This is the model class for table "post".
@@ -84,6 +85,11 @@ class Post extends \yii\db\ActiveRecord
         $redis = Yii::$app->redis;
 
         return $redis->sismember("post:{$this->getId()}:likes", $user->getId());
+    }
+
+
+    public function getComments(){
+        return $this->hasMany(Comment::className(), ['post_id', 'id']);
     }
 
 

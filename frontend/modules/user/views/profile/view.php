@@ -11,7 +11,7 @@ use frontend\modules\user\models\forms\PictureForm;
 use dosamigos\fileupload\FileUpload;
 ?>
 
-<h3><?php echo Html::encode($user->username); ?></h3>
+<h3 class="name"><?php echo Html::encode($user->username); ?></h3>
 <p><?php echo HtmlPurifier::process($user->about); ?></p>
 <hr>
 
