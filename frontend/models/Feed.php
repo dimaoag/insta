@@ -3,6 +3,7 @@
 namespace frontend\models;
 
 use Yii;
+use yii\redis\Connection;
 
 /**
  * This is the model class for table "feed".
@@ -47,4 +48,14 @@ class Feed extends \yii\db\ActiveRecord
             'post_created_at' => 'Post Created At',
         ];
     }
+
+    public function countLikes(){
+
+        /** @var $redis Connection */
+        $redis = Yii::$app->redis;
+
+        return $redis->scard("post:{$this->post_id}:likes");
+    }
+
+
 }

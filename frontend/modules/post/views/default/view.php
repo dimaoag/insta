@@ -92,7 +92,6 @@ $this->registerJsFile('@web/js/like4.js', [
    'depends' => YiiAsset::className(),
 ]);
 
-
 ?>
 
 

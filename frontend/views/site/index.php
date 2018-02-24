@@ -9,6 +9,7 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\helpers\HtmlPurifier;
+use yii\web\YiiAsset;
 
 $this->title = 'My Yii Application';
 ?>
@@ -31,6 +32,17 @@ $this->title = 'My Yii Application';
             <div class="col-md-12">
                 <?php echo Yii::$app->formatter->asDatetime($feedItem->post_created_at, "php:Y-d-m  H:i"); ?>
             </div>
+            <div class="col-md-12">
+                Likes: <small class="likes-count"><?php echo $feedItem->countLikes(); ?></small>
+
+                <a href="#" class="btn btn-primary button-unlike <?php echo ($currentUser->likesPost($feedItem->post_id)) ? "" : "display-none"; ?>" data-id="<?php echo $feedItem->post_id; ?>">
+                    Unlike&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-down"></span>
+                </a>
+                <a href="#" class="btn btn-primary button-like <?php echo ($currentUser->likesPost($feedItem->post_id)) ? "display-none" : ""; ?>" data-id="<?php echo $feedItem->post_id; ?>">
+                    Like&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-up"></span>
+                </a>
+
+            </div>
         </div>
         <div class="col-md-12">
             <hr>
@@ -40,3 +52,12 @@ $this->title = 'My Yii Application';
 <?php endif;?>
 
 </div>
+
+
+<?php
+$this->registerJsFile('@web/js/like4.js', [
+    'depends' => YiiAsset::className(),
+]);
+
+?>
+

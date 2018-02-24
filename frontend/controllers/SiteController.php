@@ -62,11 +62,8 @@ class SiteController extends Controller
 
         return $this->render('index', [
             'feedItems' => $feedItems,
-            'carrentUser' => $currentUser,
+            'currentUser' => $currentUser,
         ]);
     }
-
-
-
 
 }
