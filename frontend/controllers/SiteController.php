@@ -3,6 +3,8 @@ namespace frontend\controllers;
 
 use frontend\models\User;
 use yii\web\Controller;
+use Yii;
+use yii\filters\AccessControl;
 
 /**
  * Site controller
@@ -23,6 +25,25 @@ class SiteController extends Controller
     }
 
 
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index'],
+                'rules' => [
+                    // allow authenticated users
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    // everything else is denied
+                ],
+            ],
+        ];
+    }
+
+
 
     /**
      * Displays homepage.
@@ -31,11 +52,17 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $users = User::find()->all();
+        /**
+         * @var $currentUser User;
+         */
+        $currentUser = Yii::$app->user->identity;
 
+        $limit = Yii::$app->params['feedPostLimit'];
+        $feedItems = $currentUser->getFeed($limit);
 
         return $this->render('index', [
-            'users' => $users,
+            'feedItems' => $feedItems,
+            'carrentUser' => $currentUser,
         ]);
     }
 

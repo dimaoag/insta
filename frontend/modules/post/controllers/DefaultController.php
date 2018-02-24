@@ -44,7 +44,7 @@ class DefaultController extends Controller
     public function actionCreate(){
 
         /**@var $model PostForm */
-        $model = new PostForm(Yii::$app->user->identity->getId());
+        $model = new PostForm(Yii::$app->user->identity);
 
         if ($model->load(Yii::$app->request->post())){
 

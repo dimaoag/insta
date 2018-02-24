@@ -7,6 +7,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\redis\Connection;
 use yii\web\IdentityInterface;
+use frontend\models\Feed;
 
 /**
  * User model
@@ -322,6 +323,11 @@ class User extends ActiveRecord implements IdentityInterface
             return $this->save(false, ['picture']);
         }
         return false;
+    }
+
+    public function getFeed($limit){
+        $order = ['post_created_at' => SORT_DESC];
+        return $this->hasMany(Feed::className(), ['user_id' => 'id'])->orderBy($order)->limit($limit)->all();
     }
 
 }

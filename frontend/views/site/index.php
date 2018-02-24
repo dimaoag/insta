@@ -1,30 +1,42 @@
 <?php
 
-/* @var $this yii\web\View */
-/* @var $users array frontend\models\User */
+/**
+ * @var $this yii\web\View;
+ * @var $feedItems[] frontend\models\Feed;
+ * @var $currentUser frontend\models\User;
+ */
 
 use yii\helpers\Url;
+use yii\helpers\Html;
+use yii\helpers\HtmlPurifier;
 
 $this->title = 'My Yii Application';
 ?>
 <div class="site-index">
+<?php if ($feedItems): ?>
 
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
+    <?php foreach ($feedItems as $feedItem) :?>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
-
-    <div class="body-content">
-
-        <?php foreach ($users as $user): ?>
-            <a href="<?php echo Url::to(['/user/profile/view', 'nickname' => $user->getNickname()]); ?>">
-                <?php echo $user['username']; ?>
-            </a>
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <img src="<?= $feedItem->author_picture; ?>" alt="img" style="width: 30px; height: 30px">
+                <a href="<?php echo Url::to(['/user/profile/view', 'nickname' =>($feedItem->author_nickname) ? $feedItem->author_nickname : $feedItem->author_id]); ?>">
+                    <?php echo Html::encode($feedItem->author_name); ?>
+                </a>
+            </div>
+            <img src="<?php echo Yii::$app->storage->getFile($feedItem->post_filename); ?>" alt="img">
+            <div class="col-md-12">
+                <?php echo HtmlPurifier::process($feedItem->post_description); ?>
+            </div>
+            <div class="col-md-12">
+                <?php echo Yii::$app->formatter->asDatetime($feedItem->post_created_at, "php:Y-d-m  H:i"); ?>
+            </div>
+        </div>
+        <div class="col-md-12">
             <hr>
-        <?php endforeach; ?>
+        </div>
+    <?php endforeach; ?>
 
-    </div>
+<?php endif;?>
+
 </div>

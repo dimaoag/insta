@@ -61,6 +61,9 @@ return [
             'dateFormat' => 'Y-m-d H:i:s',
             'datetimeFormat' => 'Y-m-d H:i:s',
         ],
+        'feedService' => [
+            'class' => 'frontend\components\FeedService',
+        ],
 
 
 

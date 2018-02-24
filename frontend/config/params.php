@@ -12,4 +12,6 @@ return [
         'maxHeight' => 768,
     ],
 
+    'feedPostLimit' => 150,
+
 ];
