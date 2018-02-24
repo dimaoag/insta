@@ -38,6 +38,8 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
+        ['label' => 'My profile', 'url' => ['/profile/'.\Yii::$app->user->getId()]],
+        ['label' => 'Create post', 'url' => ['/post/default/create']],
 
     ];
     if (Yii::$app->user->isGuest) {

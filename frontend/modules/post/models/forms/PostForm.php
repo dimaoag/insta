@@ -6,6 +6,8 @@ use yii\base\Model;
 use frontend\components\Debug;
 use frontend\models\Post;
 use frontend\models\User;
+use Intervention\Image\ImageManager;
+
 
 class PostForm extends Model
 {
@@ -34,7 +36,24 @@ class PostForm extends Model
     public function __construct($user_id)
     {
         $this->user_id = $user_id;
+        $this->on(self::EVENT_AFTER_VALIDATE, [$this, 'resizePicture']);
     }
+
+    public function resizePicture(){
+
+        $width = Yii::$app->params['postPicture']['maxWidth'];
+        $height = Yii::$app->params['postPicture']['maxHeight'];
+
+        $manager = new ImageManager(['driver' => 'imagick']);
+        $image = $manager->make($this->picture->tempName);
+
+        $image->resize($width,$height, function ($constrain){
+            $constrain->aspectRatio();
+            $constrain->upsize();
+        })->save();
+
+    }
+
 
 
     public function save(){
