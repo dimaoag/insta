@@ -29,7 +29,7 @@ class ProfileController extends Controller
         /**@var  $currentUser User */
         $currentUser = Yii::$app->user->identity;
 
-        $feedItems = $currentUser->getPosts();
+        $posts = $currentUser->getPosts();
 
         $modelPicture = new PictureForm();
 
@@ -37,7 +37,7 @@ class ProfileController extends Controller
             'user' => $this->findUserById($nickname),
             'currentUser' => $currentUser,
             'modelPicture' => $modelPicture,
-            'feedItems' => $feedItems,
+            'posts' => $posts,
         ]);
     }
 

@@ -101,6 +101,10 @@ class DefaultController extends Controller
                 if ($model->save($user_id, $id)){
 
                     //return $this->goBack();
+                    $post = Post::findOne($id);
+                    $post->count_comments += 1;
+                    $post->save(false);
+
                     return $this->redirect(['/post/'.$id]);
                 }
 
@@ -114,6 +118,9 @@ class DefaultController extends Controller
 
         $comment = Comment::findOne($id);
         $comment->delete();
+        $post = Post::findOne($post_id);
+        $post->count_comments -= 1;
+        $post->save(false);
 
         return $this->redirect(['/post/'. $post_id]);
 
@@ -181,6 +188,10 @@ class DefaultController extends Controller
     private function findPost($id){
 
         if ($post = Post::findOne($id)){
+
+            $post->count_views += 1;
+            $post->save(false);
+
             return $post;
         }
         throw new NotFoundHttpException();

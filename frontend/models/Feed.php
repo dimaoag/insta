@@ -4,6 +4,7 @@ namespace frontend\models;
 
 use Yii;
 use yii\redis\Connection;
+use frontend\models\Post;
 
 /**
  * This is the model class for table "feed".
@@ -57,5 +58,17 @@ class Feed extends \yii\db\ActiveRecord
         return $redis->scard("post:{$this->post_id}:likes");
     }
 
+
+    public function countComments($post_id){
+        $post = Post::findOne($post_id);
+
+        return $post->count_comments;
+    }
+
+    public function countViews($post_id){
+        $post = Post::findOne($post_id);
+
+        return $post->count_views;
+    }
 
 }

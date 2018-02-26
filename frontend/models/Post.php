@@ -14,6 +14,8 @@ use frontend\modules\post\models\Comment;
  * @property string $filename
  * @property string $description
  * @property int $created_at
+ * @property int $count_comments
+ * @property int $count_views
  */
 class Post extends \yii\db\ActiveRecord
 {

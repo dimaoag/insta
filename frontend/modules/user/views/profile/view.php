@@ -3,6 +3,7 @@
 /* @var $user frontend\models\User */
 /* @var $currentUser frontend\models\User */
 /* @var $modelPicture frontend\modules\user\models\forms\PictureForm */
+/* @var $posts frontend\models\Post */
 
 use yii\helpers\Url;
 use yii\helpers\Html;
@@ -95,9 +96,9 @@ use yii\web\YiiAsset;
 <div class="container">
     <h1 style="text-align: center;  ">My Posts</h1>
     <div class="site-index">
-        <?php if ($feedItems): ?>
+        <?php if ($posts): ?>
 
-            <?php foreach ($feedItems as $feedItem) :?>
+            <?php foreach ($posts as $post) :?>
 
                 <div class="col-md-12">
                     <div class="col-md-12">
@@ -106,22 +107,24 @@ use yii\web\YiiAsset;
                             <?php echo Html::encode($user->username); ?>
                         </a>
                     </div>
-                    <a href="<?php echo Url::to(['/post/'.$feedItem->id])?>">
-                        <img src="<?php echo Yii::$app->storage->getFile($feedItem->filename); ?>" alt="img">
+                    <a href="<?php echo Url::to(['/post/'.$post->id])?>">
+                        <img src="<?php echo Yii::$app->storage->getFile($post->filename); ?>" alt="img">
                     </a>
                     <div class="col-md-12">
-                        <?php echo HtmlPurifier::process($feedItem->description); ?>
+                        <?php echo HtmlPurifier::process($post->description); ?>
                     </div>
                     <div class="col-md-12">
-                        <?php echo Yii::$app->formatter->asDatetime($feedItem->created_at, "php:Y-d-m  H:i"); ?>
+                        <?php echo Yii::$app->formatter->asDatetime($post->created_at, "php:Y-d-m  H:i"); ?>
                     </div>
                     <div class="col-md-12">
-                        Likes: <small class="likes-count"><?php $user->likesPost($feedItem->id); ?></small>
+                        Comments: <small class="likes-count"><?php echo $post->count_comments; ?></small>
+                        Views: <small class="likes-count"><?php echo $post->count_views; ?></small>
+                        Likes: <small class="likes-count"><?php echo $user->likesPost($post->id); ?></small>
 
-                        <a href="#" class="btn btn-primary button-unlike <?php echo ($currentUser->likesPost($feedItem->id)) ? "" : "display-none"; ?>" data-id="<?php echo $feedItem->id; ?>">
+                        <a href="#" class="btn btn-primary button-unlike <?php echo ($currentUser->likesPost($post->id)) ? "" : "display-none"; ?>" data-id="<?php echo $post->id; ?>">
                             Unlike&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-down"></span>
                         </a>
-                        <a href="#" class="btn btn-primary button-like <?php echo ($currentUser->likesPost($feedItem->id)) ? "display-none" : ""; ?>" data-id="<?php echo $feedItem->id; ?>">
+                        <a href="#" class="btn btn-primary button-like <?php echo ($currentUser->likesPost($post->id)) ? "display-none" : ""; ?>" data-id="<?php echo $post->id; ?>">
                             Like&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-up"></span>
                         </a>
 

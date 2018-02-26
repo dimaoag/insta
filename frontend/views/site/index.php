@@ -35,6 +35,8 @@ $this->title = 'My Yii Application';
                 <?php echo Yii::$app->formatter->asDatetime($feedItem->post_created_at, "php:Y-d-m  H:i"); ?>
             </div>
             <div class="col-md-12">
+                Comments: <small class="likes-count"><?php echo $feedItem->countComments($feedItem->post_id); ?></small>
+                Views: <small class="likes-count"><?php echo $feedItem->countViews($feedItem->post_id); ?></small>
                 Likes: <small class="likes-count"><?php echo $feedItem->countLikes(); ?></small>
 
                 <a href="#" class="btn btn-primary button-unlike <?php echo ($currentUser->likesPost($feedItem->post_id)) ? "" : "display-none"; ?>" data-id="<?php echo $feedItem->post_id; ?>">
