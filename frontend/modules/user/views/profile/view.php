@@ -9,6 +9,8 @@ use yii\helpers\Html;
 use yii\helpers\HtmlPurifier;
 use frontend\modules\user\models\forms\PictureForm;
 use dosamigos\fileupload\FileUpload;
+use yii\web\YiiAsset;
+
 ?>
 
 <h3 class="name"><?php echo Html::encode($user->username); ?></h3>
@@ -90,6 +92,54 @@ use dosamigos\fileupload\FileUpload;
 </button>
 
 
+<div class="container">
+    <h1 style="text-align: center;  ">My Posts</h1>
+    <div class="site-index">
+        <?php if ($feedItems): ?>
+
+            <?php foreach ($feedItems as $feedItem) :?>
+
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        <img src="<?= $user->getPicture(); ?>" alt="img" style="width: 30px; height: 30px">
+                        <a href="<?php echo Url::to(['/user/profile/view', 'nickname' =>($user->nickname) ? $user->nickname : $user->id]); ?>">
+                            <?php echo Html::encode($user->username); ?>
+                        </a>
+                    </div>
+                    <a href="<?php echo Url::to(['/post/'.$feedItem->id])?>">
+                        <img src="<?php echo Yii::$app->storage->getFile($feedItem->filename); ?>" alt="img">
+                    </a>
+                    <div class="col-md-12">
+                        <?php echo HtmlPurifier::process($feedItem->description); ?>
+                    </div>
+                    <div class="col-md-12">
+                        <?php echo Yii::$app->formatter->asDatetime($feedItem->created_at, "php:Y-d-m  H:i"); ?>
+                    </div>
+                    <div class="col-md-12">
+                        Likes: <small class="likes-count"><?php $user->likesPost($feedItem->id); ?></small>
+
+                        <a href="#" class="btn btn-primary button-unlike <?php echo ($currentUser->likesPost($feedItem->id)) ? "" : "display-none"; ?>" data-id="<?php echo $feedItem->id; ?>">
+                            Unlike&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-down"></span>
+                        </a>
+                        <a href="#" class="btn btn-primary button-like <?php echo ($currentUser->likesPost($feedItem->id)) ? "display-none" : ""; ?>" data-id="<?php echo $feedItem->id; ?>">
+                            Like&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-up"></span>
+                        </a>
+
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <hr>
+                </div>
+            <?php endforeach; ?>
+
+        <?php endif;?>
+
+    </div>
+</div>
+
+
+
+
 <!-- Modal subscriptions -->
 <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -146,3 +196,11 @@ use dosamigos\fileupload\FileUpload;
 
 
 <!-- Modal followers -->
+
+
+<?php
+$this->registerJsFile('@web/js/like4.js', [
+    'depends' => YiiAsset::className(),
+]);
+
+?>

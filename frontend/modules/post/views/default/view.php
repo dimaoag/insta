@@ -12,6 +12,7 @@ use yii\helpers\Html;
 use yii\web\YiiAsset;
 use yii\widgets\ActiveForm;
 use frontend\modules\post\models\Comment;
+use yii\helpers\Url;
 
 ?>
 
@@ -50,27 +51,36 @@ use frontend\modules\post\models\Comment;
     <br><br>
 
         <div class="container">
-                    <?php if(!empty($comments)): ?>
-                        <?php foreach ($comments as $comment): ?>
-                            <div class="row">
-                                <div class="col-lg-5">
-                                    <h5><?= Comment::getUserNameByUserId($comment['user_id']); ?></h5>
-                                    <small><?= Comment::getDate($comment['updated_at']); ?></small>
-                                    <br>
-                                    <p><?php echo Html::encode($comment['text']); ?></p>
-                                    <hr>
-                                </div>
+            <div class="comments-container">
+                <h2>Comments:</h2>
+                <?php if(!empty($comments)): ?>
+                    <?php foreach ($comments as $comment): ?>
+                        <div class="row">
+                            <div class="col-md-10 comment-item">
+                                <h5><?= Comment::getUserNameByUserId($comment['user_id']); ?>
+                                    <<?= Comment::getDate($comment['updated_at']); ?>>
+                                    <?php if($carrentUser->getId() == $comment['user_id']): ?>
+                                        <a href="<?php echo Url::to(['/post/default/delete-comment', 'id' => $comment['id'], 'post_id' => $comment['post_id']])?>">
+                                            <i class="fa fa-2x fa-trash-alt comment-control comment-delete"></i>
+                                        </a>
+                                    <?php endif; ?>
+                                </h5>
+                                <br>
+                                <h4><?php echo Html::encode($comment['text']); ?></h4>
                             </div>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                        </div>
+                        <br>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
             <div class="row">
-                <div class="col-lg-5">
+                <div class="col-md-10">
                     <?php $form = ActiveForm::begin(['action' => ['/post/default/create-comment', 'id' => $post->id],
                         'options' => ['class' => 'form-horizontal contact-form', 'role' => 'form']]); ?>
 
                     <?php echo $form->field($commentForm, 'text')->textarea(['class' => 'form-control'])->label(false); ?>
 
-                    <button type="submit" class="btn btn-success btn-block">Add</button>
+                    <button type="submit" class="btn btn-success btn-block">Add Comment</button>
 
                     <?php ActiveForm::end(); ?>
                 </div>
@@ -79,13 +89,7 @@ use frontend\modules\post\models\Comment;
 
 
 
-
-
-
-
-
 </div>
-
 
 <?php
 $this->registerJsFile('@web/js/like4.js', [

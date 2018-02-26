@@ -26,7 +26,7 @@ class DefaultController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['create', 'create-comment', 'like', 'unlike'],
+                'only' => ['create', 'create-comment', 'like', 'unlike', 'delete-comment'],
                 'rules' => [
                     // allow authenticated users
                     [
@@ -38,6 +38,7 @@ class DefaultController extends Controller
             ],
         ];
     }
+
 
 
 
@@ -108,6 +109,22 @@ class DefaultController extends Controller
         }
 
     }
+
+    public function actionDeleteComment($id, $post_id){
+
+        $comment = Comment::findOne($id);
+        $comment->delete();
+
+        return $this->redirect(['/post/'. $post_id]);
+
+    }
+
+
+    public function actionUpdateComment(){
+
+        return $this->render('view');
+    }
+
 
 
     public function actionLike(){

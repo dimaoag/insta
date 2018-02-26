@@ -25,7 +25,9 @@ $this->title = 'My Yii Application';
                     <?php echo Html::encode($feedItem->author_name); ?>
                 </a>
             </div>
-            <img src="<?php echo Yii::$app->storage->getFile($feedItem->post_filename); ?>" alt="img">
+            <a href="<?php echo Url::to(['/post/'.$feedItem->post_id])?>">
+                <img src="<?php echo Yii::$app->storage->getFile($feedItem->post_filename); ?>" alt="img">
+            </a>
             <div class="col-md-12">
                 <?php echo HtmlPurifier::process($feedItem->post_description); ?>
             </div>
