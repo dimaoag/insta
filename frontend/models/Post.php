@@ -47,6 +47,11 @@ class Post extends \yii\db\ActiveRecord
         return Yii::$app->storage->getFile($this->filename);
     }
 
+    public function getUserImage($user_id){
+        $user = User::findOne($user_id);
+        return $user->getPicture();
+    }
+
     public function getUser(){
 
         return $this->hasOne(User::className(), ['id' => 'user_id']);

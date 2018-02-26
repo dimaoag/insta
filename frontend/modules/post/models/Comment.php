@@ -73,5 +73,10 @@ class Comment extends ActiveRecord
         return Yii::$app->formatter->asDatetime($date, "php:Y-d-m  H:i");
     }
 
+    public static function getUserImage($user_id){
+        $user = User::findOne($user_id);
+        return $user->getPicture();
+    }
+
 
 }
