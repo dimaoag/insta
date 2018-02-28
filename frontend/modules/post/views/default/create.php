@@ -19,7 +19,7 @@ use yii\bootstrap\Html;
 
         <?php echo $form->field($model, 'description'); ?>
 
-        <?php echo Html::submitButton('Create') ?>
+        <?php echo Html::submitButton('Create', ['class' => 'btn btn-default']) ?>
 
     <?php ActiveForm::end() ?>
 

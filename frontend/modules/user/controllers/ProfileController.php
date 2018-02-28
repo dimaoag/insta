@@ -46,7 +46,7 @@ class ProfileController extends Controller
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 
-        $model = new PictureForm();
+        $model = new PictureForm(Yii::$app->user->identity);
         $model->picture = UploadedFile::getInstance($model, 'picture');
 
         if ($model->validate()){

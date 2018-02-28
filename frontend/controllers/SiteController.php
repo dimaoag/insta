@@ -5,6 +5,7 @@ use frontend\models\User;
 use yii\web\Controller;
 use Yii;
 use yii\filters\AccessControl;
+use yii\data\Pagination;
 
 /**
  * Site controller
@@ -30,7 +31,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index'],
+                'only' => ['index', 'users'],
                 'rules' => [
                     // allow authenticated users
                     [
@@ -63,6 +64,23 @@ class SiteController extends Controller
         return $this->render('index', [
             'feedItems' => $feedItems,
             'currentUser' => $currentUser,
+        ]);
+    }
+
+    public function actionUsers(){
+
+        $order = ['username' => SORT_ASC];
+        $query = User::find();
+
+        $count = $query->count();
+        $pageSize = 35;
+
+        $pagination = new Pagination(['totalCount' => $count, 'pageSize' => $pageSize]);
+        $users = $query->offset($pagination->offset)->limit($pagination->limit)->orderBy($order)->all();
+
+        return $this->render('users',[
+            'users' => $users,
+            'pagination' => $pagination,
         ]);
     }
 

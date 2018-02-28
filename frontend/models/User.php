@@ -295,7 +295,7 @@ class User extends ActiveRecord implements IdentityInterface
 
         $ids = $redis->sinter($key1, $key2);
 
-        return User::find()->select('id, username, nickname')->where(['id' => $ids])->orderBy('username')
+        return User::find()->select('id, username, nickname, picture')->where(['id' => $ids])->orderBy('username')
             ->asArray()->all();
 
     }
@@ -342,6 +342,12 @@ class User extends ActiveRecord implements IdentityInterface
         $redis = Yii::$app->redis;
 
         return (bool) $redis->sismember("user:{$this->getId()}:likes", $postId);
+    }
+
+
+    public function getPostCount(){
+
+        return $this->hasMany(Post::className(), ['user_id' => 'id'])->count();
     }
 
 }

@@ -45,6 +45,12 @@ use yii\helpers\Url;
                             <div class="post-likes">
                                 <a href="#" class="btn btn-secondary"><i class="fa fa-lg fa-heart-o"></i></a>
                                 <span class="likes-count"><?php echo $post->countLikes(); ?> Likes</span>
+                                <a href="" class="btn btn-default button-unlike <?php echo ($carrentUser && $post->isLikeBy($carrentUser)) ? "" : "display-none"; ?>" data-id="<?php echo $post->id; ?>">
+                                    Unlike&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-down"></span>
+                                </a>
+                                <a href="" class="btn btn-default button-like <?php echo ($carrentUser && $post->isLikeBy($carrentUser)) ? "display-none" : ""; ?>" data-id="<?php echo $post->id; ?>">
+                                    Like&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-up"></span>
+                                </a>
                             </div>
                             <div class="post-comments">
                                 <a href="#"><?php echo $post->count_comments; ?> comments</a>
@@ -55,14 +61,6 @@ use yii\helpers\Url;
                             </div>
                         </div>
                     </article>
-                    <div class="col-sm-12">
-                        <a href="" class="btn btn-primary button-unlike <?php echo ($carrentUser && $post->isLikeBy($carrentUser)) ? "" : "display-none"; ?>" data-id="<?php echo $post->id; ?>">
-                            Unlike&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-down"></span>
-                        </a>
-                        <a href="" class="btn btn-primary button-like <?php echo ($carrentUser && $post->isLikeBy($carrentUser)) ? "display-none" : ""; ?>" data-id="<?php echo $post->id; ?>">
-                            Like&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-up"></span>
-                        </a>
-                    </div>
                     <!-- feed item -->
 
 

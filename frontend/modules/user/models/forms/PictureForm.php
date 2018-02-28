@@ -41,8 +41,8 @@ class PictureForm extends Model
             return;
         }
 
-        $width = Yii::$app->params['profilePicture']['maxWidth'];
-        $height = Yii::$app->params['profilePicture']['maxHeight'];
+        $width = Yii::$app->params['postPicture']['maxWidth'];
+        $height = Yii::$app->params['postPicture']['maxHeight'];
 
         $manager = new ImageManager(array('driver' => 'imagick'));
 

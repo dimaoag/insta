@@ -59,6 +59,7 @@ FontAwesomeAsset::register($this);
                                $menuItems[] = ['label' => 'Signup', 'url' => ['/user/default/signup']];
                                $menuItems[] = ['label' => 'Login', 'url' => ['/user/default/login']];
                            } else {
+                               $menuItems[] = ['label' => 'Users', 'url' => ['/site/users']];
                                $menuItems[] = ['label' => 'My profile', 'url' => ['/profile/'.Yii::$app->user->getId()]];
                                $menuItems[] = ['label' => 'Create post', 'url' => ['/post/default/create']];
                                $menuItems[] = '<li>'

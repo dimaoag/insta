@@ -11,51 +11,73 @@ use yii\helpers\Html;
 use yii\helpers\HtmlPurifier;
 use yii\web\YiiAsset;
 
-$this->title = 'My Yii Application';
+$this->title = 'News feed';
 ?>
-<div class="site-index">
-<?php if ($feedItems): ?>
 
-    <?php foreach ($feedItems as $feedItem) :?>
 
-        <div class="col-md-12">
-            <div class="col-md-12">
-                <img src="<?= $feedItem->author_picture; ?>" alt="img" style="width: 30px; height: 30px">
-                <a href="<?php echo Url::to(['/user/profile/view', 'nickname' =>($feedItem->author_nickname) ? $feedItem->author_nickname : $feedItem->author_id]); ?>">
-                    <?php echo Html::encode($feedItem->author_name); ?>
-                </a>
-            </div>
-            <a href="<?php echo Url::to(['/post/'.$feedItem->post_id])?>">
-                <img src="<?php echo Yii::$app->storage->getFile($feedItem->post_filename); ?>" alt="img">
-            </a>
-            <div class="col-md-12">
-                <?php echo HtmlPurifier::process($feedItem->post_description); ?>
-            </div>
-            <div class="col-md-12">
-                <?php echo Yii::$app->formatter->asDatetime($feedItem->post_created_at, "php:Y-d-m  H:i"); ?>
-            </div>
-            <div class="col-md-12">
-                Comments: <small class="likes-count"><?php echo $feedItem->countComments($feedItem->post_id); ?></small>
-                Views: <small class="likes-count"><?php echo $feedItem->countViews($feedItem->post_id); ?></small>
-                Likes: <small class="likes-count"><?php echo $feedItem->countLikes(); ?></small>
+<div class="page-posts no-padding">
+    <div class="row">
+        <div class="page page-post col-sm-12 col-xs-12">
+            <div class="blog-posts blog-posts-large">
 
-                <a href="#" class="btn btn-primary button-unlike <?php echo ($currentUser->likesPost($feedItem->post_id)) ? "" : "display-none"; ?>" data-id="<?php echo $feedItem->post_id; ?>">
-                    Unlike&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-down"></span>
-                </a>
-                <a href="#" class="btn btn-primary button-like <?php echo ($currentUser->likesPost($feedItem->post_id)) ? "display-none" : ""; ?>" data-id="<?php echo $feedItem->post_id; ?>">
-                    Like&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-up"></span>
-                </a>
+                <div class="row">
+                    <!-- feed item -->
 
+                    <?php if ($feedItems): ?>
+
+                        <?php foreach ($feedItems as $feedItem) :?>
+
+                            <article class="post col-sm-12 col-xs-12">
+                                <div class="post-meta">
+                                    <div class="post-title">
+                                        <img src="<?= $feedItem->author_picture; ?>" class="author-image" />
+                                        <div class="author-name">
+                                            <a href="<?php echo Url::to(['/user/profile/view', 'nickname' =>($feedItem->author_nickname) ? $feedItem->author_nickname : $feedItem->author_id]); ?>">
+                                                <?php echo Html::encode($feedItem->author_name); ?>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="post-type-image">
+                                    <a href="<?php echo Url::to(['/post/'.$feedItem->post_id])?>">
+                                        <img src="<?php echo Yii::$app->storage->getFile($feedItem->post_filename); ?>" alt="">
+                                    </a>
+                                </div>
+                                <div class="post-description">
+                                    <p><?php echo HtmlPurifier::process($feedItem->post_description); ?></p>
+                                </div>
+                                <div class="post-bottom">
+                                    <div class="post-likes">
+                                        <a href="#" class="btn btn-secondary"><i class="fa fa-lg fa-heart-o"></i></a>
+                                        <span class="likes-count"><?php echo $feedItem->countLikes(); ?> Likes</span>
+                                        <a href="#" class="btn btn-default button-unlike <?php echo ($currentUser->likesPost($feedItem->post_id)) ? "" : "display-none"; ?>" data-id="<?php echo $feedItem->post_id; ?>">
+                                            Unlike&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-down"></span>
+                                        </a>
+                                        <a href="#" class="btn btn-default button-like <?php echo ($currentUser->likesPost($feedItem->post_id)) ? "display-none" : ""; ?>" data-id="<?php echo $feedItem->post_id; ?>">
+                                            Like&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-up"></span>
+                                        </a>
+                                    </div>
+                                    <div class="post-comments">
+                                        <a href="#"><?php echo $feedItem->countComments($feedItem->post_id); ?> Comments</a>
+
+                                    </div>
+                                    <div class="post-date">
+                                        <span><?php echo Yii::$app->formatter->asDatetime($feedItem->post_created_at, "php:Y-d-m  H:i"); ?></span>
+                                    </div>
+                                </div>
+                            </article>
+
+                        <?php endforeach; ?>
+
+                    <?php endif;?>
+
+                    <!-- feed item -->
+                </div>
             </div>
         </div>
-        <div class="col-md-12">
-            <hr>
-        </div>
-    <?php endforeach; ?>
-
-<?php endif;?>
-
+    </div>
 </div>
+
 
 
 <?php

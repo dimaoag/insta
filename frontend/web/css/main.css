@@ -527,3 +527,24 @@ footer, .push {
     height: 155px; /* .push must be the same height as .footer */
 }
 
+.display-none{
+    display: none;
+}
+
+.comment-item{
+    border: 1px solid #0b97c4;
+}
+
+.comment-control{
+    position: relative;
+    float: right;
+    padding-left: 10px;
+}
+
+.comment-delete{
+    color: red;
+}
+
+.blog-posts .post .post-bottom .post-likes a.display-none{
+    display: none;
+}
