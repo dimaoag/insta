@@ -60,6 +60,8 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            [['username', 'nickname'], 'string', 'min' => 2],
+            [['about'], 'string'],
         ];
     }
 
@@ -179,6 +181,10 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function setPassword($password)
     {
+        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+    }
+
+    public function changePassword($password){
         $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
 

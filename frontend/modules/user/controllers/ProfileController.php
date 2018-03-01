@@ -16,9 +16,32 @@ use frontend\components\Debug;
 use yii\web\Response;
 use frontend\modules\user\models\forms\PictureForm;
 use yii\web\UploadedFile;
+use yii\filters\AccessControl;
+use frontend\modules\user\models\forms\ChangePasswordForm;
 
 class ProfileController extends Controller
 {
+
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['subscribe', 'unsubscribe', 'delete-picture', 'edit', 'change-password'],
+                'rules' => [
+                    // allow authenticated users
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    // everything else is denied
+                ],
+            ],
+        ];
+    }
+
+
+
 
     /**
      * @param $nickname
@@ -86,9 +109,6 @@ class ProfileController extends Controller
 
     public function actionSubscribe($id){
 
-        if (Yii::$app->user->isGuest){
-            return $this->redirect('/user/default/login');
-        }
 
         /**@var  $currentUser User */
         $currentUser = Yii::$app->user->identity;
@@ -105,9 +125,6 @@ class ProfileController extends Controller
 
     public function actionUnsubscribe($id){
 
-        if (Yii::$app->user->isGuest){
-            return $this->redirect('/user/default/login');
-        }
 
         /**@var  $currentUser User */
         $currentUser = Yii::$app->user->identity;
@@ -141,9 +158,6 @@ class ProfileController extends Controller
 
     public function actionDeletePicture(){
 
-        if (Yii::$app->user->isGuest) {
-            return $this->redirect(['/user/default/login']);
-        }
 
         /* @var $currentUser User */
         $currentUser = Yii::$app->user->identity;
@@ -155,6 +169,37 @@ class ProfileController extends Controller
             }
 
         return $this->redirect(['/user/profile/view', 'nickname' => $currentUser->getNickname()]);
+    }
+
+
+    public function actionEdit(){
+
+        $model = User::findOne(Yii::$app->user->identity->getId());
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()){
+            Yii::$app->session->setFlash('success','data changed');
+            return $this->redirect(['/profile/'. Yii::$app->user->identity->getId()]);
+        }
+
+        return $this->render('edit', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionChangePassword(){
+
+        $model = new ChangePasswordForm();
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()){
+
+            $model->checkAndSavePassword(Yii::$app->user->identity->getId());
+            Yii::$app->session->setFlash('success','Password changed');
+            return $this->redirect(['/profile/'. Yii::$app->user->identity->getId()]);
+        }
+
+        return $this->render('change-password', [
+            'model' => $model,
+        ]);
     }
 
 
