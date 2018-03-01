@@ -60,9 +60,11 @@ class Feed extends \yii\db\ActiveRecord
 
 
     public function countComments($post_id){
-        $post = Post::findOne($post_id);
 
-        return $post->count_comments;
+        if ($post = Post::findOne($post_id)){
+            return $post->count_comments;
+        }
+
     }
 
     public function countViews($post_id){

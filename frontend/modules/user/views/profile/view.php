@@ -53,6 +53,7 @@ $this->title = Html::encode($user->username);
 
                                     <a href="<?php echo Url::to(['/user/profile/delete-picture']); ?>" class="btn btn-danger">Delete picture</a>
                                     <a href="<?php echo Url::to(['/user/profile/edit']); ?>" class="btn btn-default">Edit profile</a>
+                                    <a href="<?php echo Url::to(['/post/post/index']); ?>" class="btn btn-default">Edit your posts</a>
 
                                 <?php endif; ?>
                             <?php endif; ?>

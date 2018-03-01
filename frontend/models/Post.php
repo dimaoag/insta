@@ -2,6 +2,7 @@
 
 namespace frontend\models;
 
+use Codeception\Util\Debug;
 use Yii;
 use yii\redis\Connection;
 use frontend\modules\post\models\Comment;
@@ -97,6 +98,26 @@ class Post extends \yii\db\ActiveRecord
 
     public function getComments(){
         return $this->hasMany(Comment::className(), ['post_id', 'id']);
+    }
+
+    public function checkDeleteImage(){
+
+        $postPictureCount = Post::find()
+            ->select(['COUNT(*) AS count'])
+            ->where(['filename' => $this->filename])
+            ->asArray()
+            ->all();
+
+        $userPictureCount = User::find()
+            ->select(['COUNT(*) AS count'])
+            ->where(['picture' => $this->filename])
+            ->asArray()
+            ->all();
+
+        if (($postPictureCount[0]['count'] <= 1) && ($userPictureCount[0]['count'] <= 1)) {
+            Yii::$app->storage->deleteFile($this->filename);
+        }
+
     }
 
 

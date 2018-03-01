@@ -1,6 +1,7 @@
 <?php
 namespace frontend\models;
 
+use frontend\components\Debug;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -324,12 +325,35 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function deletePicture()
     {
-        if ($this->picture && Yii::$app->storage->deleteFile($this->picture)) {
-            $this->picture = null;
-            return $this->save(false, ['picture']);
+        if ($this->picture){
+            $postPictureCount = Post::find()
+                ->select(['COUNT(*) AS count'])
+                ->where(['filename' => $this->picture])
+                ->asArray()
+                ->all();
+
+            $userPictureCount = User::find()
+                ->select(['COUNT(*) AS count'])
+                ->where(['picture' => $this->picture])
+                ->asArray()
+                ->all();
+
+            if (($postPictureCount[0]['count'] <= 1) && ($userPictureCount[0]['count'] <= 1)) {
+
+                if (Yii::$app->storage->deleteFile($this->picture)) {
+                    $this->picture = null;
+                    return $this->save(false, ['picture']);
+                }
+            } else {
+                $this->picture = null;
+                return $this->save(false, ['picture']);
+            }
         }
+
         return false;
     }
+
+
 
     public function getFeed($limit){
         $order = ['post_created_at' => SORT_DESC];
