@@ -186,16 +186,26 @@ class ProfileController extends Controller
         ]);
     }
 
+
+    /**
+     * @return string|Response
+     */
     public function actionChangePassword(){
 
         $model = new ChangePasswordForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()){
 
-            $model->checkAndSavePassword(Yii::$app->user->identity->getId());
-            Yii::$app->session->setFlash('success','Password changed');
-            return $this->redirect(['/profile/'. Yii::$app->user->identity->getId()]);
+            if ($model->checkAndSavePassword(Yii::$app->user->identity->getId())){
+                Yii::$app->session->setFlash('success','Password changed');
+                return $this->redirect(['/profile/'. Yii::$app->user->identity->getId()]);
+            } else {
+                Yii::$app->session->setFlash('warning','don\'t match passwords!');
+                return $this->redirect(['/user/profile/change-password']);
+            }
+
         }
+
 
         return $this->render('change-password', [
             'model' => $model,
