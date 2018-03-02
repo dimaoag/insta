@@ -15,6 +15,8 @@ use frontend\modules\user\models\forms\PictureForm;
 use yii\web\Response;
 use yii\web\UploadedFile;
 use frontend\modules\post\models\forms\PostUpdateForm;
+use frontend\models\Feed;
+use frontend\modules\post\models\Comment;
 /**
  * PostController implements the CRUD actions for Post model.
  */
@@ -151,6 +153,10 @@ class PostController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+
+        Feed::deleteAll(['post_id' => $id]);
+        Comment::deleteAll(['post_id' => $id]);
+
 
         return $this->redirect(['index']);
     }

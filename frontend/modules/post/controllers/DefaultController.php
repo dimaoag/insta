@@ -69,7 +69,7 @@ class DefaultController extends Controller
         /**
          * @var $carrentUser User;
          */
-        $carrentUser = Yii::$app->user->identity;
+        $currentUser = Yii::$app->user->identity;
 
         /**@var $model CommentForm */
 
@@ -81,7 +81,7 @@ class DefaultController extends Controller
 
         return $this->render('view', [
             'post' => $this->findPost($id),
-            'carrentUser' => $carrentUser,
+            'currentUser' => $currentUser,
             'commentForm' => $commentForm,
             'comments' => $comments,
         ]);
