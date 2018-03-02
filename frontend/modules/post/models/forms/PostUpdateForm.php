@@ -22,7 +22,7 @@ class PostUpdateForm extends Model
     {
         return [
             [['picture'], 'file',
-                'skipOnEmpty' => false,
+                'skipOnEmpty' => true,
                 'extensions' => ['jpg', 'png', 'jpeg'],
                 'checkExtensionByMimeType' => true,
                 'maxSize' => $this->getMazFileSize(),
@@ -34,8 +34,10 @@ class PostUpdateForm extends Model
 
     public function __construct()
     {
+        if($this->picture){
+            $this->on(self::EVENT_AFTER_VALIDATE, [$this, 'resizePicture']);
+        }
 
-        $this->on(self::EVENT_AFTER_VALIDATE, [$this, 'resizePicture']);
     }
 
     public function resizePicture(){
@@ -60,10 +62,13 @@ class PostUpdateForm extends Model
         if ($this->validate()){
 
             $post = Post::findOne($post_id);
-            $post->checkDeleteImage();
-            $post->description = $this->description;
-            $post->filename = Yii::$app->storage->saveUploadedFile($this->picture);
 
+            if($this->picture){
+                $post->checkDeleteImage();
+                $post->filename = Yii::$app->storage->saveUploadedFile($this->picture);
+            }
+
+            $post->description = $this->description;
 
             if ($post->save(false)){
                 return true;

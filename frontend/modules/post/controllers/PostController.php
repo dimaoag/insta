@@ -2,6 +2,7 @@
 
 namespace frontend\modules\post\controllers;
 
+use frontend\components\Debug;
 use Yii;
 use frontend\models\Post;
 use yii\data\ActiveDataProvider;
@@ -95,7 +96,9 @@ class PostController extends Controller
 
         if ($model->load(Yii::$app->request->post())){
 
-            $model->picture = UploadedFile::getInstance($model, 'picture');
+            if ($model->picture = UploadedFile::getInstance($model, 'picture')){
+                $model->picture = UploadedFile::getInstance($model, 'picture');
+            }
 
             if ($model->update($id)){
                     Yii::$app->session->setFlash('success', 'Post updated!');

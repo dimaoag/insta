@@ -114,9 +114,9 @@ class DefaultController extends Controller
 
     }
 
-    public function actionDeleteComment($id, $post_id){
+    public function actionDeleteComment($comment_id, $post_id){
 
-        $comment = Comment::findOne($id);
+        $comment = Comment::findOne($comment_id);
         $comment->delete();
         $post = Post::findOne($post_id);
         $post->count_comments -= 1;

@@ -84,8 +84,8 @@ use yii\helpers\Url;
                                                         </a>
                                                         <span><?= Comment::getDate($comment['updated_at']); ?></span>
                                                         <?php if($carrentUser->getId() == $comment['user_id']): ?>
-                                                            <a href="<?php echo Url::to(['/post/default/delete-comment', 'id' => $comment['id'], 'post_id' => $comment['post_id']])?>">
-                                                                <i class="fa fa-2x fa-trash-alt comment-control comment-delete"></i>
+                                                            <a href="<?php echo Url::to(['/post/default/delete-comment', 'comment_id' => $comment['id'], 'post_id' => $comment['post_id']])?>">
+                                                                <i class="fa fa-trash-o comment-control comment-delete" aria-hidden="true"></i>
                                                             </a>
                                                         <?php endif; ?>
                                                     </h4>
