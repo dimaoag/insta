@@ -3,6 +3,7 @@
 /**
  * @var $this yii\web\View;
  * @var $feedItems[] frontend\models\Feed;
+ * @var $feedItem frontend\models\Feed;
  * @var $currentUser frontend\models\User;
  */
 
@@ -64,6 +65,15 @@ $this->title = 'News feed';
                                     <div class="post-date">
                                         <span><?php echo Yii::$app->formatter->asDatetime($feedItem->post_created_at, "php:Y-d-m  H:i"); ?></span>
                                     </div>
+                                    <div class="post-report">
+                                        <?php if (!$feedItem->isReported($currentUser)):?>
+                                            <a href="#" class="btn btn-default button-complain" data-id="<?= $feedItem->post_id ?>">
+                                                Report post <i class="fa fa-cog fa-spin fa-fw icon-preloader" style="display: none"></i>
+                                            </a>
+                                        <?php else: ?>
+                                            <p>Post has been reported</p>
+                                        <?php endif;?>
+                                    </div>
                                 </div>
                             </article>
 
@@ -85,5 +95,10 @@ $this->registerJsFile('@web/js/like4.js', [
     'depends' => YiiAsset::className(),
 ]);
 
+$this->registerJsFile('@web/js/complaints.js', [
+    'depends' => YiiAsset::className(),
+]);
+
 ?>
+
 

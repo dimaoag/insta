@@ -17,6 +17,7 @@ use frontend\modules\post\models\Comment;
  * @property int $created_at
  * @property int $count_comments
  * @property int $count_views
+ * @property int $complaints
  */
 class Post extends \yii\db\ActiveRecord
 {
@@ -116,6 +117,24 @@ class Post extends \yii\db\ActiveRecord
 
         if (($postPictureCount[0]['count'] <= 1) && ($userPictureCount[0]['count'] <= 1)) {
             Yii::$app->storage->deleteFile($this->filename);
+        }
+
+    }
+
+
+    /**
+     * @param $user User
+     */
+    public function complain($user){
+
+        /** @var $redis Connection */
+        $redis = Yii::$app->redis;
+        $key = "post:{$this->getId()}:complaints";
+
+        if (!$redis->sismember($key, $user->getId())){ //если нет жалоб то добавляем
+            $redis->sadd($key, $user->getId());
+            $this->complaints++;
+            return $this->save(false, ['complaints']);
         }
 
     }

@@ -59,6 +59,7 @@ use yii\helpers\Url;
                             <div class="post-date">
                                 <span><?php echo Yii::$app->formatter->asDatetime($post->created_at, "php:Y-d-m  H:i"); ?></span>
                             </div>
+                            </div>
                         </div>
                     </article>
                     <!-- feed item -->
@@ -121,6 +122,7 @@ use yii\helpers\Url;
 $this->registerJsFile('@web/js/like4.js', [
    'depends' => YiiAsset::className(),
 ]);
+
 
 ?>
 

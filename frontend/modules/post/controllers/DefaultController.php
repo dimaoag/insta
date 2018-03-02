@@ -26,7 +26,7 @@ class DefaultController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['create', 'create-comment', 'like', 'unlike', 'delete-comment'],
+                'only' => ['create', 'create-comment', 'like', 'unlike', 'delete-comment', 'complain'],
                 'rules' => [
                     // allow authenticated users
                     [
@@ -67,7 +67,7 @@ class DefaultController extends Controller
     public function actionView($id){
 
         /**
-         * @var $carrentUser User;
+         * @var $currentUser User;
          */
         $currentUser = Yii::$app->user->identity;
 
@@ -136,9 +136,6 @@ class DefaultController extends Controller
 
     public function actionLike(){
 
-//        if (Yii::$app->user->isGuest){
-//            return $this->redirect(['/user/default/login']);
-//        }
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 
@@ -146,11 +143,11 @@ class DefaultController extends Controller
         $post = $this->findPost($id);
 
         /**
-         * @var $carrentUser User;
+         * @var $currentUser User;
          */
-        $carrentUser = Yii::$app->user->identity;
+        $currentUser = Yii::$app->user->identity;
 
-        $post->like($carrentUser);
+        $post->like($currentUser);
 
         return [
             'success' => true,
@@ -161,9 +158,6 @@ class DefaultController extends Controller
 
     public function actionUnlike(){
 
-//        if (Yii::$app->user->isGuest){
-//            return $this->redirect(['/user/default/login']);
-//        }
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 
@@ -171,11 +165,11 @@ class DefaultController extends Controller
         $post = $this->findPost($id);
 
         /**
-         * @var $carrentUser User;
+         * @var $currentUser User;
          */
-        $carrentUser = Yii::$app->user->identity;
+        $currentUser = Yii::$app->user->identity;
 
-        $post->unlike($carrentUser);
+        $post->unlike($currentUser);
 
         return [
             'success' => true,
@@ -197,6 +191,31 @@ class DefaultController extends Controller
         throw new NotFoundHttpException();
     }
 
+
+    public function actionComplain(){
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $post_id = Yii::$app->request->post('post_id');
+
+        /**
+         * @var $currentUser User;
+         */
+        $currentUser = Yii::$app->user->identity;
+        $post = Post::findOne($post_id);
+
+        if ($post->complain($currentUser)){
+            return [
+                'success' => true,
+                'text' => 'Post reported',
+            ];
+        }
+        return [
+            'success' => false,
+            'text' => 'Error',
+        ];
+
+    }
 
 
 }

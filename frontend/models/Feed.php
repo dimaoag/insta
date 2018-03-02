@@ -73,4 +73,16 @@ class Feed extends \yii\db\ActiveRecord
         return $post->count_views;
     }
 
+    /**
+     * @param $user User
+     * @return mixed
+     */
+    public function isReported($user){
+        /** @var $redis Connection */
+        $redis = Yii::$app->redis;
+
+        //проверяем есть ли в множестве "post:{$this->post_id}:complaints"  запись $user->getId()
+        return $redis->sismember("post:{$this->post_id}:complaints", $user->getId());
+    }
+
 }
