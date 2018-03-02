@@ -8,6 +8,8 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use backend\models\Comment;
+use backend\models\Feed;
 
 /**
  * ManageController implements the CRUD actions for Post model.
@@ -58,7 +60,15 @@ class ManageController extends Controller
         ]);
     }
 
+    public function actionApprove($id){
 
+        $post = $this->findModel($id);
+        if ($post->approve()){
+            Yii::$app->session->setFlash('success', 'Post marked as appropriate');
+            return $this->redirect(['index']);
+        }
+
+    }
 
     /**
      * Deletes an existing Post model.
@@ -69,7 +79,17 @@ class ManageController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        /**
+         * @var $model Post
+         */
+        $model = $this->findModel($id);
+        $model->checkDeleteImage();
+        $model->delete();
+
+
+        Feed::deleteAll(['post_id' => $id]);
+        Comment::deleteAll(['post_id' => $id]);
+
 
         return $this->redirect(['index']);
     }

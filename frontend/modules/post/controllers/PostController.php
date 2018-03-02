@@ -152,7 +152,6 @@ class PostController extends Controller
      */
     public function actionDelete($id)
     {
-        //$this->findModel($id)->delete();
         /**
          * @var $model Post
          */

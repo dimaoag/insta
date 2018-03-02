@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use yii\redis\Connection;
 
 /**
  * This is the model class for table "post".
@@ -54,4 +55,37 @@ class Post extends \yii\db\ActiveRecord
     public function getImage(){
         return Yii::$app->storage->getFile($this->filename);
     }
+
+    public function approve(){
+
+        /** @var $redis Connection */
+        $redis = Yii::$app->redis;
+        $key = "post:{$this->id}:complaints";
+        $redis->del($key);
+
+        $this->complaints = 0;
+        return $this->save(false,['complaints']);
+    }
+
+
+    public function checkDeleteImage(){
+
+        $postPictureCount = Post::find()
+            ->select(['COUNT(*) AS count'])
+            ->where(['filename' => $this->filename])
+            ->asArray()
+            ->all();
+
+        $userPictureCount = User::find()
+            ->select(['COUNT(*) AS count'])
+            ->where(['picture' => $this->filename])
+            ->asArray()
+            ->all();
+
+        if (($postPictureCount[0]['count'] <= 1) && ($userPictureCount[0]['count'] <= 1)) {
+            Yii::$app->storage->deleteFile($this->filename);
+        }
+
+    }
+
 }
