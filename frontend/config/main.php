@@ -61,6 +61,11 @@ return [
         'feedService' => [
             'class' => 'frontend\components\FeedService',
         ],
+        'i18n' => [ //internationalization
+            '*' => [
+                'class' => 'yii\i18n\PhpMessageSource',
+            ],
+        ],
 
 
 
