@@ -152,7 +152,14 @@ class PostController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        //$this->findModel($id)->delete();
+        /**
+         * @var $model Post
+         */
+        $model = $this->findModel($id);
+        $model->checkDeleteImage();
+        $model->delete();
+
 
         Feed::deleteAll(['post_id' => $id]);
         Comment::deleteAll(['post_id' => $id]);
