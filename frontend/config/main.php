@@ -54,9 +54,6 @@ return [
                 'post/<id:\d+>' => 'post/default/view',
             ],
         ],
-        'storage' => [
-            'class' => 'frontend\components\Storage',
-        ],
         'formatter' => [
             'dateFormat' => 'Y-m-d H:i:s',
             'datetimeFormat' => 'Y-m-d H:i:s',
