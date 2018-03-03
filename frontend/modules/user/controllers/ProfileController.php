@@ -18,6 +18,7 @@ use frontend\modules\user\models\forms\PictureForm;
 use yii\web\UploadedFile;
 use yii\filters\AccessControl;
 use frontend\modules\user\models\forms\ChangePasswordForm;
+use frontend\models\Feed;
 
 class ProfileController extends Controller
 {
@@ -79,6 +80,15 @@ class ProfileController extends Controller
              */
             $user = Yii::$app->user->identity;
             $user->picture = Yii::$app->storage->saveUploadedFile($model->picture);
+
+            $feeds = Feed::find()->where(['author_id' => $user->id])->all();
+
+
+            /** @var  $feed Feed */
+            foreach ($feeds as $feed){
+                $feed->author_picture = $user->picture;
+                $feed->save(false, ['author_picture']);
+            }
 
             if ($user->save(false, ['picture'])){
                 return [
@@ -163,6 +173,7 @@ class ProfileController extends Controller
         $currentUser = Yii::$app->user->identity;
 
         if ($currentUser->deletePicture()) {
+
                 Yii::$app->session->setFlash('success', 'Picture deleted');
             } else {
                 Yii::$app->session->setFlash('danger', 'Error');

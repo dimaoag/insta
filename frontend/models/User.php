@@ -317,6 +317,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function getPicture(){
         if ($this->picture){
             return Yii::$app->storage->getFile($this->picture);
+            //return Yii::$app->storage->saveUploadedFile($this->picture);
         }
 
         return self::DEFAULT_IMAGE;
@@ -342,10 +343,28 @@ class User extends ActiveRecord implements IdentityInterface
 
                 if (Yii::$app->storage->deleteFile($this->picture)) {
                     $this->picture = null;
+
+                    $feeds = Feed::find()->where(['author_id' => Yii::$app->user->identity->getId()])->all();
+
+                    /** @var  $feed Feed */
+                    foreach ($feeds as $feed){
+                        $feed->author_picture = self::DEFAULT_IMAGE;
+                        $feed->save(false);
+                    }
+
                     return $this->save(false, ['picture']);
                 }
             } else {
                 $this->picture = null;
+
+                $feeds = Feed::find()->where(['post_id' => Yii::$app->user->identity->getId()])->all();
+
+                /** @var  $feed Feed */
+                foreach ($feeds as $feed){
+                    $feed->author_picture = self::DEFAULT_IMAGE;
+                    $feed->save(false);
+                }
+
                 return $this->save(false, ['picture']);
             }
         }

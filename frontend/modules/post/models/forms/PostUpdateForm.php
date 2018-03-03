@@ -8,6 +8,7 @@ use frontend\models\Post;
 use frontend\models\User;
 use Intervention\Image\ImageManager;
 use frontend\models\events\PostCreatedEvent;
+use frontend\models\Feed;
 
 class PostUpdateForm extends Model
 {
@@ -66,6 +67,14 @@ class PostUpdateForm extends Model
             if($this->picture){
                 $post->checkDeleteImage();
                 $post->filename = Yii::$app->storage->saveUploadedFile($this->picture);
+
+                $feeds = Feed::find()->where(['post_id' => $post_id])->all();
+
+                /** @var  $feed Feed */
+                foreach ($feeds as $feed){
+                    $feed->post_filename = $post->filename;
+                    $feed->save(false);
+                }
             }
 
             $post->description = $this->description;

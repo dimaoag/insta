@@ -31,9 +31,9 @@ $this->title = 'News feed';
                             <article class="post col-sm-12 col-xs-12">
                                 <div class="post-meta">
                                     <div class="post-title">
-                                        <img src="<?= $feedItem->author_picture; ?>" class="author-image" />
+                                        <img src="<?=  $feedItem->getImage(); ?>" class="author-image" />
                                         <div class="author-name">
-                                            <a href="<?php echo Url::to(['/user/profile/view', 'nickname' =>($feedItem->author_nickname) ? $feedItem->author_nickname : $feedItem->author_id]); ?>">
+                                            <a href="<?php echo Url::to(['/user/profile/view', 'nickname' =>$feedItem->author_id]); ?>">
                                                 <?php echo Html::encode($feedItem->author_name); ?>
                                             </a>
                                         </div>

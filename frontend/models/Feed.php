@@ -22,6 +22,10 @@ use frontend\models\Post;
  */
 class Feed extends \yii\db\ActiveRecord
 {
+
+    const DEFAULT_IMAGE = '/img/default_profile_image.jpg';
+
+
     /**
      * @inheritdoc
      */
@@ -29,6 +33,7 @@ class Feed extends \yii\db\ActiveRecord
     {
         return 'feed';
     }
+
 
 
     /**
@@ -83,6 +88,14 @@ class Feed extends \yii\db\ActiveRecord
 
         //проверяем есть ли в множестве "post:{$this->post_id}:complaints"  запись $user->getId()
         return $redis->sismember("post:{$this->post_id}:complaints", $user->getId());
+    }
+
+    public function getImage(){
+        if ($this->author_picture && $this->author_picture !== self::DEFAULT_IMAGE){
+            return Yii::$app->storage->getFile($this->author_picture);
+        }
+
+        return self::DEFAULT_IMAGE;
     }
 
 }

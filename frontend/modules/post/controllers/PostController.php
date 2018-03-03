@@ -103,6 +103,7 @@ class PostController extends Controller
             }
 
             if ($model->update($id)){
+
                     Yii::$app->session->setFlash('success', 'Post updated!');
                 return $this->redirect(['/post/post/index']);
             }
