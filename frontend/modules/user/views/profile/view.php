@@ -51,26 +51,26 @@ $this->title = Html::encode($user->username);
                                         ]);
                                     ?>
 
-                                    <a href="<?php echo Url::to(['/user/profile/delete-picture']); ?>" class="btn btn-danger">Delete picture</a>
-                                    <a href="<?php echo Url::to(['/user/profile/edit']); ?>" class="btn btn-default">Edit profile</a>
-                                    <a href="<?php echo Url::to(['/post/post/index']); ?>" class="btn btn-default">Edit posts</a>
+                                    <a href="<?php echo Url::to(['/user/profile/delete-picture']); ?>" class="btn btn-danger"><?=Yii::t('my-profile', 'Delete picture') ?></a>
+                                    <a href="<?php echo Url::to(['/user/profile/edit']); ?>" class="btn btn-default"><?=Yii::t('my-profile', 'Edit profile') ?></a>
+                                    <a href="<?php echo Url::to(['/post/post/index']); ?>" class="btn btn-default"><?=Yii::t('my-profile', 'Edit posts') ?></a>
 
                                 <?php endif; ?>
                             <?php endif; ?>
 
                             <hr>
-                            <div class="alert alert-success display-none" id="profile-image-success">Profile image updated</div>
+                            <div class="alert alert-success display-none" id="profile-image-success"><?=Yii::t('my-profile', 'Profile image updated') ?></div>
                             <div class="alert alert-danger display-none" id="profile-image-fail"></div>
                         </div>
                         <?php if ($currentUser && !$user->equals($currentUser)): ?>
                             <?php if (!$currentUser->isFollowing($user)): ?>
-                                <a href="<?php echo Url::to(['/user/profile/subscribe', 'id' => $user->getId()]); ?>" class="btn btn-info">Subscribe</a>
+                                <a href="<?php echo Url::to(['/user/profile/subscribe', 'id' => $user->getId()]); ?>" class="btn btn-info"><?=Yii::t('my-profile', 'Subscribe') ?></a>
                             <?php else: ?>
-                                <a href="<?php echo Url::to(['/user/profile/unsubscribe', 'id' => $user->getId()]); ?>" class="btn btn-info">Unsubscribe</a>
+                                <a href="<?php echo Url::to(['/user/profile/unsubscribe', 'id' => $user->getId()]); ?>" class="btn btn-info"><?=Yii::t('my-profile', 'Unsubscribe') ?></a>
                             <?php endif; ?>
                             <?php if ($mutualSubscriptions = $currentUser->getMutualSubscriptionsTo($user)): ?>
                                 <hr>
-                                <h5>Friends, who are also following <?php echo Html::encode($user->username); ?>: </h5>
+                                <h5><?=Yii::t('my-profile', 'Friends, who are also following') ?> <?php echo Html::encode($user->username); ?>: </h5>
                                 <div class="row">
                                     <?php foreach ($mutualSubscriptions as $item): ?>
                                         <div class="col-md-12">
@@ -89,16 +89,16 @@ $this->title = Html::encode($user->username);
                         <?php endif; ?>
                         <div class="profile-bottom">
                             <div class="profile-post-count">
-                                <span><?php echo $user->getPostCount(); ?> posts</span>
+                                <span><?php echo $user->getPostCount(); ?> <?=Yii::t('my-profile', 'Posts') ?></span>
                             </div>
                             <div class="profile-followers">
                                 <a href="#" data-toggle="modal" data-target="#myModal1">
-                                    <?php echo $user->countSubscriptions(); ?> Subscriptions
+                                    <?php echo $user->countSubscriptions(); ?> <?=Yii::t('my-profile', 'Subscriptions') ?>
                                 </a>
                             </div>
                             <div class="profile-following">
                                 <a href="#" data-toggle="modal" data-target="#myModal2">
-                                    <?php echo $user->countFollowers(); ?> Followers
+                                    <?php echo $user->countFollowers(); ?> <?=Yii::t('my-profile', 'Followers') ?>
                                 </a>
                             </div>
                         </div>
@@ -130,7 +130,7 @@ $this->title = Html::encode($user->username);
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Subscriptions</h4>
+                <h4 class="modal-title" id="myModalLabel"><?=Yii::t('my-profile', 'Subscriptions') ?></h4>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -144,7 +144,7 @@ $this->title = Html::encode($user->username);
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?=Yii::t('my-profile', 'Close') ?></button>
             </div>
         </div>
     </div>
@@ -157,7 +157,7 @@ $this->title = Html::encode($user->username);
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Followers</h4>
+                <h4 class="modal-title" id="myModalLabel"><?=Yii::t('my-profile', 'Followers') ?></h4>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -171,7 +171,7 @@ $this->title = Html::encode($user->username);
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?=Yii::t('my-profile', 'Close') ?></button>
             </div>
         </div>
     </div>

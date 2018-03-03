@@ -11,11 +11,11 @@ use yii\helpers\Html;
         <div class="col-xs-12">
 
             <?php $form = ActiveForm::begin(['action' => ['/user/profile/change-password']]); ?>
-            <?= $form->field($model, 'password_1')->passwordInput(); ?>
+            <?= $form->field($model, 'password_1')->passwordInput()->label(Yii::t('my-profile', 'New password')); ?>
 
-            <?= $form->field($model, 'password_2')->passwordInput(); ?>
+            <?= $form->field($model, 'password_2')->passwordInput()->label(Yii::t('my-profile', 'Repeat password')); ?>
 
-            <?= Html::submitButton('Change', ['class' => 'btn btn-default']) ?>
+            <?= Html::submitButton(Yii::t('my-profile', 'Change'), ['class' => 'btn btn-default']) ?>
 
             <?php ActiveForm::end(); ?>
         </div>

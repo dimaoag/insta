@@ -44,16 +44,16 @@ use yii\helpers\Url;
                         <div class="post-bottom">
                             <div class="post-likes">
                                 <a href="#" class="btn btn-secondary"><i class="fa fa-lg fa-heart-o"></i></a>
-                                <span class="likes-count"><?php echo $post->countLikes(); ?> Likes</span>
+                                <span class="likes-count"><?php echo $post->countLikes(); ?> <?=Yii::t('post', 'Likes') ?></span>
                                 <a href="" class="btn btn-default button-unlike <?php echo ($currentUser && $post->isLikeBy($currentUser)) ? "" : "display-none"; ?>" data-id="<?php echo $post->id; ?>">
-                                    Unlike&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-down"></span>
+                                    <?=Yii::t('post', 'Unlike') ?>&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-down"></span>
                                 </a>
                                 <a href="" class="btn btn-default button-like <?php echo ($currentUser && $post->isLikeBy($currentUser)) ? "display-none" : ""; ?>" data-id="<?php echo $post->id; ?>">
-                                    Like&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-up"></span>
+                                    <?=Yii::t('post', 'Like') ?>&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-up"></span>
                                 </a>
                             </div>
                             <div class="post-comments">
-                                <a href="#"><?php echo $post->count_comments; ?> comments</a>
+                                <a href="#"><?php echo $post->count_comments; ?> <?=Yii::t('post', 'Comments') ?></a>
 
                             </div>
                             <div class="post-date">
@@ -66,7 +66,7 @@ use yii\helpers\Url;
 
 
                     <div class="col-sm-12 col-xs-12">
-                        <h4><?php echo $post->count_comments; ?> comments</h4>
+                        <h4><?php echo $post->count_comments; ?> <?=Yii::t('post', 'Comments') ?></h4>
                         <div class="comments-post">
 
                             <div class="single-item-title"></div>
@@ -102,14 +102,16 @@ use yii\helpers\Url;
                     </div>
                     <div class="col-sm-12 col-xs-12">
                         <div class="comment-respond">
-                            <h4>Leave a Reply</h4>
+                            <h4><?=Yii::t('post', 'Leave a Reply') ?></h4>
                             <?php $form = ActiveForm::begin(['action' => ['/post/default/create-comment', 'id' => $post->id]]); ?>
                             <p class="comment-form-comment">
                                 <?php echo $form->field($commentForm, 'text')
                                     ->textarea(['class' => 'form-control', 'rows' => 6, 'placeholder' => 'Text', 'aria-required' => true])->label(false); ?>
                             </p>
-                            <button type="submit" class="btn btn-secondary">Add Comment</button>
+                            <?php echo Html::submitButton(Yii::t('post', 'Add Comment'), ['class' => 'btn btn-secondary'])?>
+
                             <?php ActiveForm::end(); ?>
+                            <br>
                         </div>
                     </div>
                 </div>

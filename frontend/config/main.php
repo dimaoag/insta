@@ -10,6 +10,7 @@ return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'language' => 'ru-Ru', //ru-Ru  en-US
     'controllerNamespace' => 'frontend\controllers',
     'modules' => [
         'user' => [
@@ -61,9 +62,13 @@ return [
         'feedService' => [
             'class' => 'frontend\components\FeedService',
         ],
-        'i18n' => [ //internationalization
-            '*' => [
-                'class' => 'yii\i18n\PhpMessageSource',
+        'i18n' => [
+            'translations' => [
+                '*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    //'basePath' => '@app/messages',
+                    //'sourceLanguage' => 'en-US',
+                ],
             ],
         ],
 

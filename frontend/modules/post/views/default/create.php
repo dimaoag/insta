@@ -11,15 +11,15 @@ use yii\bootstrap\Html;
 
 <div class="post-default-index">
 
-    <h1>Create post</h1>
+    <h1><?= Yii::t('my-profile', 'Create post') ?></h1>
 
     <?php $form = ActiveForm::begin(); ?>
 
-        <?php echo $form->field($model, 'picture')->fileInput(); ?>
+        <?php echo $form->field($model, 'picture')->fileInput()->label(Yii::t('my-profile', 'Image')); ?>
 
-        <?php echo $form->field($model, 'description'); ?>
+        <?php echo $form->field($model, 'description')->label(Yii::t('my-profile', 'Description')); ?>
 
-        <?php echo Html::submitButton('Create', ['class' => 'btn btn-default']) ?>
+        <?php echo Html::submitButton(Yii::t('my-profile', 'Create'), ['class' => 'btn btn-default']) ?>
 
     <?php ActiveForm::end() ?>
 

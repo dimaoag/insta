@@ -19,13 +19,13 @@ $this->title = 'Posts';
             ['class' => 'yii\grid\SerialColumn'],
             [
                     'format' => 'html',
-                    'label' => 'Image',
+                    'label' => Yii::t('my-profile', 'Image'),
                     'value' => function($data){
                         return Html::img($data->getImage(), ['width' => 200]);
                     },
             ],
             [
-                'label' => 'Description',
+                'label' => Yii::t('my-profile', 'Description'),
                 'value' => 'description',
             ],
 

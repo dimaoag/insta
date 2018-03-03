@@ -11,6 +11,7 @@ use frontend\assets\AppAsset;
 use frontend\assets\FontAwesomeAsset;
 use common\widgets\Alert;
 use yii\helpers\Url;
+use Yii;
 
 AppAsset::register($this);
 FontAwesomeAsset::register($this);
@@ -51,22 +52,24 @@ FontAwesomeAsset::register($this);
                     <nav class="main-menu">
                        <?php
                            $menuItems = [
-                               ['label' => 'Newsfeed', 'url' => ['/site/index']],
+                               ['label' => Yii::t('menu', 'Newsfeed'), 'url' => ['/site/index']],
 
 
                            ];
                            if (Yii::$app->user->isGuest) {
-                               $menuItems[] = ['label' => 'Signup', 'url' => ['/user/default/signup']];
-                               $menuItems[] = ['label' => 'Login', 'url' => ['/user/default/login']];
+                               $menuItems[] = ['label' => Yii::t('menu', 'Signup'), 'url' => ['/user/default/signup']];
+                               $menuItems[] = ['label' => Yii::t('menu', 'Login'),  'url' => ['/user/default/login']];
                            } else {
-                               $menuItems[] = ['label' => 'Users', 'url' => ['/site/users']];
-                               $menuItems[] = ['label' => 'My profile', 'url' => ['/profile/'.Yii::$app->user->getId()]];
-                               $menuItems[] = ['label' => 'Create post', 'url' => ['/post/default/create']];
+                               $menuItems[] = ['label' => Yii::t('menu', 'Users'), 'url' => ['/site/users']];
+                               $menuItems[] = ['label' => Yii::t('menu', 'My profile'), 'url' => ['/profile/'.Yii::$app->user->getId()]];
+                               $menuItems[] = ['label' => Yii::t('menu', 'Create post'), 'url' => ['/post/default/create']];
                                $menuItems[] = '<li>'
 
                                    . Html::beginForm(['/user/default/logout'], 'post')
                                    . Html::submitButton(
-                                           'Logout (' . Yii::$app->user->identity->username . ') <i class="fa fa-sign-out"></i>',
+                                           Yii::t('menu', 'Logout ({username})', [
+                                                   'username' => Yii::$app->user->identity->username
+                                           ]).'<i class="fa fa-sign-out"></i>',
                                        ['class' => 'btn btn-link logout']
                                    )
                                    . Html::endForm()

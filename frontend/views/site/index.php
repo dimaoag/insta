@@ -50,17 +50,19 @@ $this->title = 'News feed';
                                 <div class="post-bottom">
                                     <div class="post-likes">
                                         <a href="#" class="btn btn-secondary"><i class="fa fa-lg fa-heart-o"></i></a>
-                                        <span class="likes-count"><?php echo $feedItem->countLikes(); ?> Likes</span>
+                                        <span class="likes-count"><?php echo $feedItem->countLikes(); ?> <?=Yii::t('post', 'Likes') ?></span>
                                         <a href="#" class="btn btn-default button-unlike <?php echo ($currentUser->likesPost($feedItem->post_id)) ? "" : "display-none"; ?>" data-id="<?php echo $feedItem->post_id; ?>">
-                                            Unlike&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-down"></span>
+                                            <?=Yii::t('post', 'Unlike') ?>&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-down"></span>
                                         </a>
                                         <a href="#" class="btn btn-default button-like <?php echo ($currentUser->likesPost($feedItem->post_id)) ? "display-none" : ""; ?>" data-id="<?php echo $feedItem->post_id; ?>">
-                                            Like&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-up"></span>
+                                            <?=Yii::t('post', 'Like') ?>&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-up"></span>
                                         </a>
                                     </div>
                                     <div class="post-comments">
-                                        <a href="#"><?php echo $feedItem->countComments($feedItem->post_id); ?> Comments</a>
-
+                                        <a href="<?php echo Url::to(['/post/'.$feedItem->post_id])?>">
+                                            <?php echo $feedItem->countComments($feedItem->post_id); ?>
+                                            <?=Yii::t('post', 'Comments') ?>
+                                        </a>
                                     </div>
                                     <div class="post-date">
                                         <span><?php echo Yii::$app->formatter->asDatetime($feedItem->post_created_at, "php:Y-d-m  H:i"); ?></span>
@@ -68,10 +70,10 @@ $this->title = 'News feed';
                                     <div class="post-report">
                                         <?php if (!$feedItem->isReported($currentUser)):?>
                                             <a href="#" class="btn btn-default button-complain" data-id="<?= $feedItem->post_id ?>">
-                                                Report post <i class="fa fa-cog fa-spin fa-fw icon-preloader" style="display: none"></i>
+                                                <?=Yii::t('post', 'Report post') ?> <i class="fa fa-cog fa-spin fa-fw icon-preloader" style="display: none"></i>
                                             </a>
                                         <?php else: ?>
-                                            <p>Post has been reported</p>
+                                            <p><?=Yii::t('post', 'Post has been reported') ?></p>
                                         <?php endif;?>
                                     </div>
                                 </div>
