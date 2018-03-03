@@ -324,9 +324,9 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
 
-    public function deletePicture()
-    {
-        if ($this->picture){
+    public function deletePicture(){
+
+        if ($this->picture) {
             $postPictureCount = Post::find()
                 ->select(['COUNT(*) AS count'])
                 ->where(['filename' => $this->picture])
@@ -339,7 +339,9 @@ class User extends ActiveRecord implements IdentityInterface
                 ->asArray()
                 ->all();
 
-            if (($postPictureCount[0]['count'] <= 1) && ($userPictureCount[0]['count'] <= 1)) {
+
+            if (($postPictureCount[0]['count'] + $userPictureCount[0]['count']) < 2) {
+                //if ($postPictureCount[0]['count'] <= 1 && $userPictureCount[0]['count'] <= 1) {
 
                 if (Yii::$app->storage->deleteFile($this->picture)) {
                     $this->picture = null;
@@ -347,7 +349,7 @@ class User extends ActiveRecord implements IdentityInterface
                     $feeds = Feed::find()->where(['author_id' => Yii::$app->user->identity->getId()])->all();
 
                     /** @var  $feed Feed */
-                    foreach ($feeds as $feed){
+                    foreach ($feeds as $feed) {
                         $feed->author_picture = self::DEFAULT_IMAGE;
                         $feed->save(false);
                     }
@@ -355,12 +357,13 @@ class User extends ActiveRecord implements IdentityInterface
                     return $this->save(false, ['picture']);
                 }
             } else {
+
                 $this->picture = null;
 
-                $feeds = Feed::find()->where(['post_id' => Yii::$app->user->identity->getId()])->all();
+                $feeds = Feed::find()->where(['author_id' => Yii::$app->user->identity->getId()])->all();
 
                 /** @var  $feed Feed */
-                foreach ($feeds as $feed){
+                foreach ($feeds as $feed) {
                     $feed->author_picture = self::DEFAULT_IMAGE;
                     $feed->save(false);
                 }

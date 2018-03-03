@@ -115,7 +115,7 @@ class Post extends \yii\db\ActiveRecord
             ->asArray()
             ->all();
 
-        if (($postPictureCount[0]['count'] <= 1) && ($userPictureCount[0]['count'] <= 1)) {
+        if (($postPictureCount[0]['count'] + $userPictureCount[0]['count']) < 2) {
             Yii::$app->storage->deleteFile($this->filename);
         }
 
