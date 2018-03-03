@@ -42,6 +42,16 @@ FontAwesomeAsset::register($this);
                         </a>
                     </h1>
                 </div>
+                <div class="col-md-4 col-sm-4 navicons-topbar">
+                    <ul>
+                        <li>
+                            <?= Html::beginForm(['/site/language']) ?>
+                            <?= Html::dropDownList('language', Yii::$app->language, ['en-US' => 'English', 'ru-RU' => 'Русский']) ?>
+                            <?= Html::submitButton('Change') ?>
+                            <?= Html::endForm() ?>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
 

@@ -128,6 +128,8 @@ class ProfileController extends Controller
 
         $currentUser->followUser($user);
 
+
+
         return $this->redirect(['/user/profile/view', 'nickname' => $user->getNickname()]);
 
     }
@@ -143,6 +145,7 @@ class ProfileController extends Controller
         $user = $this->findUser($id);
 
         $currentUser->unfollowUser($user);
+
 
         return $this->redirect(['/user/profile/view', 'nickname' => $user->getNickname()]);
 

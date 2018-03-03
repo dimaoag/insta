@@ -2,10 +2,12 @@
 namespace frontend\controllers;
 
 use frontend\models\User;
+use yii\debug\models\search\Debug;
 use yii\web\Controller;
 use Yii;
 use yii\filters\AccessControl;
 use yii\data\Pagination;
+use yii\web\Cookie;
 
 /**
  * Site controller
@@ -82,6 +84,29 @@ class SiteController extends Controller
             'users' => $users,
             'pagination' => $pagination,
         ]);
+    }
+
+
+    public function actionLanguage(){
+
+        $languages = ['ru-RU', 'en-US'];
+
+        $language = Yii::$app->request->post('language');
+
+        if (in_array($language, $languages)){
+
+            $languageCookie = new Cookie([
+                'name' => 'language',
+                'value' => $language,
+                'expire' => time() + 60 * 60 * 24 * 30, //30 days
+            ]);
+
+            Yii::$app->response->cookies->add($languageCookie);
+
+            return $this->redirect(Yii::$app->request->referrer); //возвращаем на ту страницу где пользователь находился
+        }
+
+        die('Error!');
     }
 
 }
