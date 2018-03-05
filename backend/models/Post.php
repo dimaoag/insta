@@ -56,6 +56,7 @@ class Post extends \yii\db\ActiveRecord
         return Yii::$app->storage->getFile($this->filename);
     }
 
+
     public function approve(){
 
         /** @var $redis Connection */
@@ -82,10 +83,60 @@ class Post extends \yii\db\ActiveRecord
             ->asArray()
             ->all();
 
-        if (($postPictureCount[0]['count'] <= 1) && ($userPictureCount[0]['count'] <= 1)) {
+        if (($postPictureCount[0]['count'] + $userPictureCount[0]['count']) < 2) {
             Yii::$app->storage->deleteFile($this->filename);
         }
 
+    }
+
+    public function getComments(){
+
+        return $this->hasMany(Comment::className(),['post_id' => 'id']);
+    }
+
+    public function getFeeds(){
+
+        return $this->hasMany(Feed::className(), ['post_id' => 'id']);
+    }
+
+
+    /**
+     * @return bool
+     */
+
+
+    public function beforeDelete()
+    {
+        if(parent::beforeDelete()){
+
+            /** @var $redis Connection */
+
+            $redis = Yii::$app->redis;
+            $key = "post:{$this->id}:likes";
+
+            $redis->del($key);
+
+            //Feed::deleteAll(['post_id' => $this->id]);
+            //Comment::deleteAll(['post_id' => $this->id]);
+
+            if ($this->comments){
+                foreach ($this->comments as $comment){
+                    /** @var $comment Comment */
+                    $comment->delete();
+                }
+            }
+
+            if ($this->feeds){
+                foreach ($this->feeds as $feed){
+                    /** @var $feed Feed */
+                    $feed->delete();
+                }
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
 }

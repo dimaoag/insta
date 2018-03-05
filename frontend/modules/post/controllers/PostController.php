@@ -160,11 +160,6 @@ class PostController extends Controller
         $model->checkDeleteImage();
         $model->delete();
 
-
-        Feed::deleteAll(['post_id' => $id]);
-        Comment::deleteAll(['post_id' => $id]);
-
-
         return $this->redirect(['index']);
     }
 

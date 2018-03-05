@@ -15,6 +15,9 @@ return [
         'complaints' => [
             'class' => 'backend\modules\complaints\Module',
         ],
+        'post' => [
+            'class' => 'backend\modules\post\Module',
+        ],
     ],
     'components' => [
         'request' => [

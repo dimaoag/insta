@@ -3,6 +3,7 @@
 namespace frontend\models;
 
 use Codeception\Util\Debug;
+use function Symfony\Component\Debug\Tests\testHeader;
 use Yii;
 use yii\redis\Connection;
 use frontend\modules\post\models\Comment;
@@ -98,8 +99,16 @@ class Post extends \yii\db\ActiveRecord
 
 
     public function getComments(){
-        return $this->hasMany(Comment::className(), ['post_id', 'id']);
+
+        return $this->hasMany(Comment::className(),['post_id' => 'id']);
     }
+
+    public function getFeeds(){
+
+        return $this->hasMany(Feed::className(), ['post_id' => 'id']);
+    }
+
+
 
     public function checkDeleteImage(){
 
@@ -139,5 +148,38 @@ class Post extends \yii\db\ActiveRecord
 
     }
 
+    public function beforeDelete()
+    {
+        if(parent::beforeDelete()){
+
+            /** @var $redis Connection */
+
+            $redis = Yii::$app->redis;
+            $key = "post:{$this->id}:likes";
+
+            $redis->del($key);
+
+            //Feed::deleteAll(['post_id' => $this->id]);
+            //Comment::deleteAll(['post_id' => $this->id]);
+
+            if ($this->comments){
+                foreach ($this->comments as $comment){
+                    /** @var $comment Comment */
+                    $comment->delete();
+                }
+            }
+
+            if ($this->feeds){
+                foreach ($this->feeds as $feed){
+                    /** @var $feed Feed */
+                    $feed->delete();
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
 
 }
