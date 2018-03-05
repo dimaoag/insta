@@ -205,8 +205,7 @@ class User extends ActiveRecord implements IdentityInterface
             return Yii::$app->storage->getFile($this->picture);
             //return Yii::$app->storage->saveUploadedFile($this->picture);
         }
-
-        return Yii::$app->params['defaultPicture'];
+        return Yii::$app->params['storageToDefaultPictureBackend'] . Yii::$app->params['defaultPicture'];
     }
 
 
