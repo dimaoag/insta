@@ -320,7 +320,7 @@ class User extends ActiveRecord implements IdentityInterface
             //return Yii::$app->storage->saveUploadedFile($this->picture);
         }
 
-        return self::DEFAULT_IMAGE;
+        return Yii::$app->params['defaultPicture'];
     }
 
 
@@ -350,7 +350,7 @@ class User extends ActiveRecord implements IdentityInterface
 
                     /** @var  $feed Feed */
                     foreach ($feeds as $feed) {
-                        $feed->author_picture = self::DEFAULT_IMAGE;
+                        $feed->author_picture = Yii::$app->params['defaultPicture'];
                         $feed->save(false);
                     }
 
@@ -364,7 +364,7 @@ class User extends ActiveRecord implements IdentityInterface
 
                 /** @var  $feed Feed */
                 foreach ($feeds as $feed) {
-                    $feed->author_picture = self::DEFAULT_IMAGE;
+                    $feed->author_picture = Yii::$app->params['defaultPicture'];
                     $feed->save(false);
                 }
 

@@ -6,4 +6,6 @@ return [
 
     'storagePath' => '@frontend/web/uploads/',
     'storageUri' => 'http://insta.com/uploads/',
+
+    'defaultPicture' => '/img/default_profile_image.jpg',
 ];

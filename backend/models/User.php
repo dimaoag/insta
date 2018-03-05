@@ -19,6 +19,10 @@ use yii\web\IdentityInterface;
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
+ * @property string $about
+ * @property integer $type
+ * @property string $nickname
+ * @property string $picture
  * @property string $password write-only password
  */
 class User extends ActiveRecord implements IdentityInterface
@@ -186,4 +190,67 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
+    public function getPosts(){
+
+        return $this->hasMany(Post::className(), ['user_id' => 'id']);
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getPicture(){
+        if ($this->picture){
+            return Yii::$app->storage->getFile($this->picture);
+            //return Yii::$app->storage->saveUploadedFile($this->picture);
+        }
+
+        return Yii::$app->params['defaultPicture'];
+    }
+
+
+
+    public function beforeDelete(){
+
+        if(parent::beforeDelete()) {
+
+            if ($this->picture) {
+                $postPictureCount = Post::find()
+                    ->select(['COUNT(*) AS count'])
+                    ->where(['filename' => $this->picture])
+                    ->asArray()
+                    ->all();
+
+                $userPictureCount = User::find()
+                    ->select(['COUNT(*) AS count'])
+                    ->where(['picture' => $this->picture])
+                    ->asArray()
+                    ->all();
+
+                if (($postPictureCount[0]['count'] + $userPictureCount[0]['count']) < 2) {
+
+                    Yii::$app->storage->deleteFile($this->picture);
+
+                }
+            }
+
+            if ($this->posts) {
+                foreach ($this->$this->posts as $post) {
+                    /** @var $post Post */
+                    $post->delete();
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+
+
+
+
 }

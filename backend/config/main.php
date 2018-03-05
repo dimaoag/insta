@@ -18,6 +18,9 @@ return [
         'post' => [
             'class' => 'backend\modules\post\Module',
         ],
+        'user' => [
+            'class' => 'backend\modules\user\Module',
+        ],
     ],
     'components' => [
         'request' => [
