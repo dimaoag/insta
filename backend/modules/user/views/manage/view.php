@@ -45,6 +45,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'about:ntext',
             'type',
             'nickname',
+            [
+                'attribute' => 'roles',
+                'value' => function($user){
+                    /** @var $user backend\models\User */
+                    return implode(', ', $user->getRoles());
+                },
+            ],
         ],
     ]) ?>
 

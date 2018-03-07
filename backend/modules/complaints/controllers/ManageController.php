@@ -8,8 +8,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use backend\models\Comment;
-use backend\models\Feed;
+use yii\filters\AccessControl;
 
 /**
  * ManageController implements the CRUD actions for Post model.
@@ -26,6 +25,16 @@ class ManageController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'view', 'approve', 'delete'],
+                        'roles' => ['moderator'],
+                    ],
                 ],
             ],
         ];

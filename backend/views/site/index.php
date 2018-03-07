@@ -4,6 +4,7 @@
 
 
 use yii\helpers\Url;
+use frontend\components\Debug;
 $this->title = 'My Yii Application';
 ?>
 <div class="site-index">
@@ -16,26 +17,22 @@ $this->title = 'My Yii Application';
 
         <div class="row">
             <div class="col-lg-4">
-                <h2>Complaints</h2>
+                <h2>Manage Complaints</h2>
 
-                <p><a class="btn btn-default" href="<?= Url::to(['/complaints/manage']) ?>">Manage</a></p>
+                <p><a class="btn btn-default" href="<?= Url::to(['/complaints/manage']) ?>">Manage Complaints</a></p>
             </div>
             <div class="col-lg-4">
                 <h2>Manage Posts</h2>
 
-                <p><a class="btn btn-default" href="<?= Url::to(['/post/default/index']) ?>">Posts</a></p>
+                <p><a class="btn btn-default" href="<?= Url::to(['/post/default/index']) ?>">Manage Posts</a></p>
             </div>
             <div class="col-lg-4">
-                <h2>Heading</h2>
+                <h2>Manage Users</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+                <p><a class="btn btn-default" href="<?= Url::to(['/user/manage']) ?>">Manage Users</a></p>
             </div>
         </div>
+
 
     </div>
 </div>

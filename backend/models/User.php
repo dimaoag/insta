@@ -1,11 +1,13 @@
 <?php
 namespace backend\models;
 
+use frontend\components\Debug;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use yii\helpers\ArrayHelper;
 
 /**
  * User model
@@ -30,6 +32,11 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
 
+    const ROLE_ADMIN = 'admin';
+    const ROLE_MODERATOR = 'moderator';
+
+
+    public $roles;
 
     /**
      * @inheritdoc
@@ -57,7 +64,17 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            [['roles'], 'safe'],
         ];
+    }
+
+
+    public function __construct(array $config = [])
+    {
+        parent::__construct($config);
+
+        $this->on(self::EVENT_AFTER_UPDATE, [$this, 'saveRoles']);
+
     }
 
     /**
@@ -248,8 +265,41 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
 
+    public function getRolesDropDown(){
 
+        return [
+            self::ROLE_ADMIN => 'Admin',
+            self::ROLE_MODERATOR => 'Moderator',
+        ];
+    }
 
+    public function saveRoles(){
+
+        Yii::$app->authManager->revokeAll($this->getId());
+
+        if (is_array($this->roles)){
+            foreach ($this->roles as $roleName){
+                if ($role = Yii::$app->authManager->getRole($roleName)){
+                    Yii::$app->authManager->assign($role, $this->getId());
+                }
+            }
+        }
+    }
+
+    public function afterFind()
+    {
+        parent::afterFind();
+
+        $this->roles = $this->getRoles();
+
+    }
+
+    public function getRoles(){
+
+        $roles = Yii::$app->authManager->getRolesByUser($this->getId());
+
+        return ArrayHelper::getColumn($roles, 'name', false);
+    }
 
 
 }
