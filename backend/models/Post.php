@@ -109,6 +109,24 @@ class Post extends \yii\db\ActiveRecord
     {
         if(parent::beforeDelete()){
 
+
+            $postPictureCount = Post::find()
+                ->select(['COUNT(*) AS count'])
+                ->where(['filename' => $this->filename])
+                ->asArray()
+                ->all();
+
+            $userPictureCount = User::find()
+                ->select(['COUNT(*) AS count'])
+                ->where(['picture' => $this->filename])
+                ->asArray()
+                ->all();
+
+            if (($postPictureCount[0]['count'] + $userPictureCount[0]['count']) < 2) {
+                Yii::$app->storage->deleteFile($this->filename);
+            }
+
+
             /** @var $redis Connection */
 
             $redis = Yii::$app->redis;
@@ -116,8 +134,6 @@ class Post extends \yii\db\ActiveRecord
 
             $redis->del($key);
 
-            //Feed::deleteAll(['post_id' => $this->id]);
-            //Comment::deleteAll(['post_id' => $this->id]);
 
             if ($this->comments){
                 foreach ($this->comments as $comment){

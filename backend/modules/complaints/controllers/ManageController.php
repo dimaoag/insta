@@ -92,7 +92,6 @@ class ManageController extends Controller
          * @var $model Post
          */
         $model = $this->findModel($id);
-        $model->checkDeleteImage();
         $model->delete();
 
         return $this->redirect(['index']);

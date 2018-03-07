@@ -8,7 +8,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\redis\Connection;
 use yii\web\IdentityInterface;
-use frontend\models\Feed;
+
 
 /**
  * User model

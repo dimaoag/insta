@@ -8,6 +8,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use yii\helpers\ArrayHelper;
+use yii\redis\Connection;
 
 /**
  * User model
@@ -231,6 +232,40 @@ class User extends ActiveRecord implements IdentityInterface
 
         if(parent::beforeDelete()) {
 
+            // delete roles
+
+            Yii::$app->authManager->revokeAll($this->getId());
+
+
+            // delete subscriptions and followers
+
+            $key1 = "user:{$this->getId()}:subscriptions";
+            $key2 = "user:{$this->getId()}:followers";
+
+            /** @var $redis Connection */
+            $redis = Yii::$app->redis;
+
+            $idsSubscriptions = $redis->sinter($key1);
+            $idsFollowers = $redis->sinter($key2);
+
+
+            if ($idsSubscriptions){
+                foreach ($idsSubscriptions as $subscription){
+                    $redis->srem("user:{$subscription}:subscriptions", $this->getId());
+                }
+            }
+
+            if ($idsFollowers){
+                foreach ($idsFollowers as $follower){
+                    $redis->srem("user:{$follower}:subscriptions", $this->getId());
+                }
+            }
+
+            $redis->del($key1, $key2);
+
+
+            // delete users' picture
+
             if ($this->picture) {
                 $postPictureCount = Post::find()
                     ->select(['COUNT(*) AS count'])
@@ -251,8 +286,10 @@ class User extends ActiveRecord implements IdentityInterface
                 }
             }
 
+            // delete users' posts
+
             if ($this->posts) {
-                foreach ($this->$this->posts as $post) {
+                foreach ($this->posts as $post) {
                     /** @var $post Post */
                     $post->delete();
                 }
